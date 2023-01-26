@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,8 @@ namespace StarterAssets
 {
 	public class PlayerInputHolder : MonoBehaviour
 	{
+		public static Action OnInteractionInput;
+
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
@@ -41,6 +44,11 @@ namespace StarterAssets
 			SprintInput(value.isPressed);
 		}
 
+		public void OnInteraction(InputValue value)
+        {
+			InteractionInput();
+        }
+
 		public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
@@ -59,6 +67,11 @@ namespace StarterAssets
 		public void SprintInput(bool newSprintState)
 		{
 			sprint = newSprintState;
+		}
+
+		public void InteractionInput()
+        {
+			OnInteractionInput?.Invoke();
 		}
 		
 		private void OnApplicationFocus(bool hasFocus)

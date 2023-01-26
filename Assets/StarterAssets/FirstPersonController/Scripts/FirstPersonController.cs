@@ -28,6 +28,8 @@ namespace StarterAssets
 		public float JumpTimeout = 0.1f;
 		[Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
 		public float FallTimeout = 0.15f;
+		[Tooltip("Time required to use action button again")]
+		public float ActionTimeout = 0.1f;
 
 		[Header("Player Grounded")]
 		[Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
@@ -59,6 +61,7 @@ namespace StarterAssets
 		// timeout deltatime
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
+		private float _actionTimeoutDelta;
 
 		private PlayerInput _playerInput;
 		private CharacterController _controller;
@@ -92,9 +95,20 @@ namespace StarterAssets
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+			_actionTimeoutDelta = ActionTimeout;
 		}
 
-		private void Update()
+        private void OnEnable()
+        {
+			PlayerInputHolder.OnInteractionInput += CheckInteraction;
+        }
+
+        private void OnDisable()
+        {
+			PlayerInputHolder.OnInteractionInput -= CheckInteraction;
+		}
+
+        private void Update()
 		{
 			JumpAndGravity();
 			GroundedCheck();
@@ -222,6 +236,11 @@ namespace StarterAssets
 			{
 				_verticalVelocity += Gravity * Time.deltaTime;
 			}
+		}
+
+		private void CheckInteraction()
+        {
+			Debug.Log("ActionInput");
 		}
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
