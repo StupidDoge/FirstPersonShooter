@@ -98,16 +98,6 @@ namespace StarterAssets
 			_actionTimeoutDelta = ActionTimeout;
 		}
 
-        private void OnEnable()
-        {
-			PlayerInputHolder.OnInteractionInput += CheckInteraction;
-        }
-
-        private void OnDisable()
-        {
-			PlayerInputHolder.OnInteractionInput -= CheckInteraction;
-		}
-
         private void Update()
 		{
 			JumpAndGravity();
@@ -236,11 +226,6 @@ namespace StarterAssets
 			{
 				_verticalVelocity += Gravity * Time.deltaTime;
 			}
-		}
-
-		private void CheckInteraction()
-        {
-			Debug.Log("ActionInput");
 		}
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

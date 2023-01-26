@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,13 +5,12 @@ namespace StarterAssets
 {
 	public class PlayerInputHolder : MonoBehaviour
 	{
-		public static Action OnInteractionInput;
-
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		public bool interact;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -21,32 +19,46 @@ namespace StarterAssets
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
 
-		public void OnMove(InputValue value)
+		[Header("Interaction settings")]
+		[SerializeField] private float _interactionTimeout = 0.1f;
+
+		private bool _canInteract = true;
+
+		public void OnMove(InputAction.CallbackContext context)
 		{
-			MoveInput(value.Get<Vector2>());
+			MoveInput(context.ReadValue<Vector2>());
 		}
 
-		public void OnLook(InputValue value)
+		public void OnLook(InputAction.CallbackContext context)
 		{
 			if(cursorInputForLook)
 			{
-				LookInput(value.Get<Vector2>());
+				LookInput(context.ReadValue<Vector2>());
 			}
 		}
 
-		public void OnJump(InputValue value)
+		public void OnJump(InputAction.CallbackContext context)
 		{
-			JumpInput(value.isPressed);
+			if (context.started)
+				JumpInput(true);
 		}
 
-		public void OnSprint(InputValue value)
+		public void OnSprint(InputAction.CallbackContext context)
 		{
-			SprintInput(value.isPressed);
+			if (context.started)
+				SprintInput(true);
+
+			if (context.canceled)
+				SprintInput(false);
 		}
 
-		public void OnInteraction(InputValue value)
+		public void OnInteraction(InputAction.CallbackContext context)
         {
-			InteractionInput();
+			if (context.started)
+				InteractionInput(true);
+
+			if (context.canceled)
+				InteractionInput(false);
         }
 
 		public void MoveInput(Vector2 newMoveDirection)
@@ -69,9 +81,9 @@ namespace StarterAssets
 			sprint = newSprintState;
 		}
 
-		public void InteractionInput()
+		public void InteractionInput(bool input)
         {
-			OnInteractionInput?.Invoke();
+			interact = input;
 		}
 		
 		private void OnApplicationFocus(bool hasFocus)
