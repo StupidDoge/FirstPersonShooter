@@ -9,7 +9,6 @@ public class Interactor : MonoBehaviour
     [SerializeField] private float _interactionPointRadius = 0.5f;
     [SerializeField] private LayerMask _interactionLayer;
     [SerializeField] private int _itemsFound;
-    [SerializeField] private float _interactionInputTimeout;
 
     private PlayerInputHolder _inputHolder;
 
