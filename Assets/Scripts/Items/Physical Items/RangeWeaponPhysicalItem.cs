@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangeWeaponPhysicalItem : MonoBehaviour, IInteractable
+public class RangeWeaponPhysicalItem : PhysicalItemBase
 {
     [SerializeField] private RangeWeaponSO _rangeWeaponSO;
 
@@ -20,9 +20,9 @@ public class RangeWeaponPhysicalItem : MonoBehaviour, IInteractable
         _fireRate = _rangeWeaponSO.FireRate;
     }
 
-    public void Interact(Interactor interactor)
+    public override void Interact(Interactor interactor)
     {
-        Debug.Log(_rangeWeaponSO.Name + "equipped! Ammo clip = " + _ammoClip + ", fire rate = " + _fireRate);
+        Debug.Log(_rangeWeaponSO.Name + " equipped! Ammo clip = " + _ammoClip + ", fire rate = " + _fireRate);
         Destroy(gameObject);
     }
 }

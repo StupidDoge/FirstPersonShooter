@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Range Weapon", menuName = "Inventory System/Items/Weapons")]
+[CreateAssetMenu(fileName = "New Range Weapon", menuName = "Inventory System/Items/Weapons/Range Weapon")]
 public class RangeWeaponSO : WeaponSO
 {
     [SerializeField] private float _ammoClip;
