@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,12 +6,15 @@ namespace StarterAssets
 {
 	public class PlayerInputHolder : MonoBehaviour
 	{
+		public static Action OnInventoryUsed;
+
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
 		public bool interact;
+		public bool inventory;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -60,6 +64,21 @@ namespace StarterAssets
 			if (context.canceled)
 				InteractionInput(false);
         }
+
+		public void OnInventory(InputAction.CallbackContext context)
+        {
+			if (context.started)
+			{
+				inventory = true;
+			}
+
+			if (context.canceled)
+            {
+				inventory = false;
+			}
+
+			OnInventoryUsed?.Invoke();
+		}
 
 		public void MoveInput(Vector2 newMoveDirection)
 		{
