@@ -8,12 +8,12 @@ public class InventoryPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        StarterAssets.PlayerInputHolder.OnInventoryUsed += InventoryPanelSetActive;
+        PlayerInputHolder.OnInventoryUsed += InventoryPanelSetActive;
     }
 
     private void OnDisable()
     {
-        StarterAssets.PlayerInputHolder.OnInventoryUsed -= InventoryPanelSetActive;
+        PlayerInputHolder.OnInventoryUsed -= InventoryPanelSetActive;
     }
 
     private void InventoryPanelSetActive()
@@ -22,14 +22,14 @@ public class InventoryPanel : MonoBehaviour
         {
             _panel.SetActive(false);
             // JUST FOR TESTING! DO IT PROPERLY LATER!
-            /*FindObjectOfType<StarterAssets.FirstPersonController>().GetComponent<StarterAssets.FirstPersonController>().enabled = true;
-            Cursor.lockState = CursorLockMode.Locked;*/
+            FindObjectOfType<FirstPersonController>().GetComponent<FirstPersonController>().enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
         }
         else
         {
             _panel.SetActive(true);
             // JUST FOR TESTING! DO IT PROPERLY LATER!
-            FindObjectOfType<StarterAssets.FirstPersonController>().GetComponent<StarterAssets.FirstPersonController>().enabled = false;
+            FindObjectOfType<FirstPersonController>().GetComponent<FirstPersonController>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
         }
     }
