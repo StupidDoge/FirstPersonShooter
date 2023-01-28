@@ -6,6 +6,8 @@ public class Inventory : MonoBehaviour
 {
     private Dictionary<ItemBase, int> _inventory = new();
 
+    public Dictionary<ItemBase, int> InventoryDictionary => _inventory;
+
     private void OnEnable()
     {
         PhysicalItemBase.OnItemEquipped += Add;

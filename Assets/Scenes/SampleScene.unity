@@ -238,6 +238,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panel: {fileID: 1511364144}
+  _contentContainer: {fileID: 533811570}
+  _inventory: {fileID: 1492431962}
+  _inventoryItem: {fileID: 9077583167209603859, guid: f719328cd8133854a9bff075aa0444b7,
+    type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

@@ -73,9 +73,9 @@ public class PlayerInputHolder : MonoBehaviour
 		if (context.canceled)
 		{
 			inventory = false;
+			OnInventoryUsed?.Invoke();
 		}
 
-		OnInventoryUsed?.Invoke();
 	}
 
 	public void MoveInput(Vector2 newMoveDirection)
