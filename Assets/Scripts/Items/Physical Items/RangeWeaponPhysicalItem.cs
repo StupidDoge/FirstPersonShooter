@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
 
     public override void Interact(Interactor interactor)
     {
-        Debug.Log(_rangeWeaponSO.Name + " equipped! Ammo clip = " + _ammoClip + ", fire rate = " + _fireRate);
+        OnItemEquipped?.Invoke(_rangeWeaponSO, baseAmount);
         Destroy(gameObject);
     }
 }

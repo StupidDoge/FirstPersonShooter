@@ -4,5 +4,26 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    
+    private Dictionary<ItemBase, int> _inventory = new();
+
+    private void OnEnable()
+    {
+        PhysicalItemBase.OnItemEquipped += Add;
+    }
+
+    private void OnDisable()
+    {
+        PhysicalItemBase.OnItemEquipped -= Add;
+    }
+
+    private void Add(ItemBase item, int amount)
+    {
+        if (_inventory.ContainsKey(item))
+            _inventory[item] += amount;
+        else
+            _inventory.Add(item, amount);
+
+        foreach (KeyValuePair<ItemBase, int> cell in _inventory)
+            Debug.Log(cell.Key.Name + " equipped, amount = " + cell.Value);
+    }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AmmoBoxPhysicalItem : PhysicalItemBase
 {
     [SerializeField] private AmmoSO _ammoSO;
-    [SerializeField] private float _amount;
+    [SerializeField] private int _amount;
 
     private float _damage;
     private AmmoType _ammoType;
@@ -23,7 +23,7 @@ public class AmmoBoxPhysicalItem : PhysicalItemBase
 
     public override void Interact(Interactor interactor)
     {
-        Debug.Log(_ammoSO.Name + " equipped! Damage = " + _damage + ", ammo type = " + _ammoType);
+        OnItemEquipped?.Invoke(_ammoSO, _amount);
         Destroy(gameObject);
     }
 }
