@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +7,17 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] private GameObject _contentContainer;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private GameObject _inventoryItem;
+
+    private List<InventoryCell> _emptyCells;
+
+    private void Start()
+    {
+        _emptyCells = new List<InventoryCell>();
+        foreach (Transform cell in _contentContainer.transform)
+            _emptyCells.Add(cell.GetComponent<InventoryCell>());
+
+        Debug.Log(_emptyCells.Count);
+    }
 
     private void OnEnable()
     {
@@ -41,19 +51,23 @@ public class InventoryPanel : MonoBehaviour
 
     private void ShowInventory() // Must be improved
     {
+        int i = 0;
         foreach (KeyValuePair<ItemBase, int> item in _inventory.InventoryDictionary)
         {
-            GameObject newObject = Instantiate(_inventoryItem, _contentContainer.transform);
+            GameObject newObject = Instantiate(_inventoryItem, _emptyCells[i].transform);
             InventoryItem inventoryItem = newObject.GetComponent<InventoryItem>();
             inventoryItem.SetUI(item.Key.ItemSprite, item.Value);
+            _emptyCells[i].Item = inventoryItem;
+            i++;
         }
+
+        foreach (KeyValuePair<ItemBase, int> cell in _inventory.InventoryDictionary)
+            Debug.Log(cell.Key.GetType() + ", amount = " + cell.Value);
     }
 
     private void ClearInventory() // Must be improved
     {
-        foreach (Transform cell in _contentContainer.transform)
-        {
-            Destroy(cell.gameObject);
-        }
+        foreach (InventoryCell cell in _emptyCells)
+            cell.DeleteItem();
     }
 }

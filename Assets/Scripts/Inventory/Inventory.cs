@@ -1,10 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private Dictionary<ItemBase, int> _inventory = new();
+    public static readonly int INVENTORY_CAPACITY = 16;
+
+    private Dictionary<ItemBase, int> _inventory = new(16);
 
     public Dictionary<ItemBase, int> InventoryDictionary => _inventory;
 
@@ -20,6 +21,12 @@ public class Inventory : MonoBehaviour
 
     private void Add(ItemBase item, int amount)
     {
+        if (_inventory.Count >= INVENTORY_CAPACITY)
+        {
+            Debug.Log("Inventory is full");
+            return;
+        }
+
         if (_inventory.ContainsKey(item))
             _inventory[item] += amount;
         else
