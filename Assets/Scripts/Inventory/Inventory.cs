@@ -1,8 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Inventory : MonoBehaviour
 {
+    public static Action<ItemBase, int> OnItemAdded;
+    public static Action<ItemBase, int> OnItemUpdated;
+
     public static readonly int INVENTORY_CAPACITY = 16;
 
     private Dictionary<ItemBase, int> _inventory = new(16);
@@ -28,11 +32,14 @@ public class Inventory : MonoBehaviour
         }
 
         if (_inventory.ContainsKey(item))
+        {
             _inventory[item] += amount;
+            OnItemUpdated?.Invoke(item, amount);
+        }
         else
+        {
             _inventory.Add(item, amount);
-
-        foreach (KeyValuePair<ItemBase, int> cell in _inventory)
-            Debug.Log(cell.Key.Name + " equipped, amount = " + cell.Value);
+            OnItemAdded?.Invoke(item, amount);
+        }
     }
 }

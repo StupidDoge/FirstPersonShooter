@@ -492,6 +492,7 @@ MonoBehaviour:
   _inventory: {fileID: 1492431962}
   _inventoryItem: {fileID: 3166694508193595982, guid: f719328cd8133854a9bff075aa0444b7,
     type: 3}
+  _firstEmptyCell: 0
 --- !u!1001 &196302033
 PrefabInstance:
   m_ObjectHideFlags: 0

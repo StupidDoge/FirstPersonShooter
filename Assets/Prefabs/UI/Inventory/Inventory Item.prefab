@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 8229593635454156114}
-  _count: {fileID: 1197284254413426737}
+  _amountText: {fileID: 1197284254413426737}
 --- !u!114 &4409707052997807813
 MonoBehaviour:
   m_ObjectHideFlags: 0
