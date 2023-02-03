@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 7057405551830784135}
   - component: {fileID: 7057405551830784134}
   m_Layer: 7
-  m_Name: Pistol_00
+  m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -458,7 +458,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &7057405551830784135
 BoxCollider:
   m_ObjectHideFlags: 0
