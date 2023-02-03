@@ -59,6 +59,7 @@ public class InventoryPanel : MonoBehaviour
 
     private void AddItem(ItemBase item, int amount)
     {
+        SearchFirstEmptyCell();
         GameObject newObject = Instantiate(_inventoryItem, _emptyCells[_firstEmptyCell].transform);
         InventoryItem inventoryItem = newObject.GetComponent<InventoryItem>();
         inventoryItem.SetInfo(item.ItemSprite, amount, _firstEmptyCell, item);
@@ -77,6 +78,18 @@ public class InventoryPanel : MonoBehaviour
                 {
                     itemInCell.UpdateCount(amount);
                 }
+            }
+        }
+    }
+
+    private void SearchFirstEmptyCell()
+    {
+        foreach (Transform cell in _contentContainer.transform)
+        {
+            if (cell.transform.childCount == 0)
+            {
+                _firstEmptyCell = cell.GetComponent<InventoryCell>().Id;
+                break;
             }
         }
     }
