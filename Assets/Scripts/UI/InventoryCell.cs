@@ -18,7 +18,7 @@ public class InventoryCell : MonoBehaviour, IDropHandler
             return;
 
         GameObject dropped = eventData.pointerDrag;
-        DragAndDrop draggableItem = dropped.GetComponent<DragAndDrop>();
+        DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
         InventoryItem inventoryItem = dropped.GetComponent<InventoryItem>();
         inventoryItem.CellNumber = Id;
         draggableItem.ParentAfterDrag = transform;
