@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class InventoryItem : MonoBehaviour
 {
+    public static Action<ItemBase> OnContextMenuOpened;
+
     public int CellNumber { get; set; }
     public ItemBase ItemSO { get; private set; }
 
@@ -28,7 +31,6 @@ public class InventoryItem : MonoBehaviour
 
     public void OpenContextMenu()
     {
-        if (ItemSO.Equippable)
-            Debug.Log("equippable");
+        OnContextMenuOpened?.Invoke(ItemSO);
     }
 }

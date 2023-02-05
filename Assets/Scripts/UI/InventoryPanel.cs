@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InventoryPanel : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] private GameObject _contentContainer;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private GameObject _inventoryItem;
+    [SerializeField] private ItemContextMenu _itemContextMenu;
 
     private List<InventoryCell> _emptyCells;
 
@@ -28,15 +30,19 @@ public class InventoryPanel : MonoBehaviour
     private void OnEnable()
     {
         PlayerInputHolder.OnInventoryUsed += InventoryPanelSetActive;
+        PlayerInputHolder.OnMouseLeftButtonClicked += CheckLeftMouseButtonClick;
         Inventory.OnItemAdded += AddItem;
         Inventory.OnItemUpdated += UpdateItem;
+        InventoryItem.OnContextMenuOpened += OpenContextMenu;
     }
 
     private void OnDisable()
     {
         PlayerInputHolder.OnInventoryUsed -= InventoryPanelSetActive;
+        PlayerInputHolder.OnMouseLeftButtonClicked -= CheckLeftMouseButtonClick;
         Inventory.OnItemAdded -= AddItem;
         Inventory.OnItemUpdated -= UpdateItem;
+        InventoryItem.OnContextMenuOpened -= OpenContextMenu;
     }
 
     private void InventoryPanelSetActive()
@@ -44,6 +50,7 @@ public class InventoryPanel : MonoBehaviour
         if (_panel.activeInHierarchy)
         {
             _panel.SetActive(false);
+            CloseContextMenu();
             // JUST FOR TESTING! DO IT PROPERLY LATER!
             FindObjectOfType<FirstPersonController>().GetComponent<FirstPersonController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
@@ -82,6 +89,17 @@ public class InventoryPanel : MonoBehaviour
         }
     }
 
+    private void OpenContextMenu(ItemBase itemSO)
+    {
+        _itemContextMenu.gameObject.SetActive(true);
+        _itemContextMenu.SetButtons(itemSO.Name, itemSO.Equippable, itemSO.Usable);
+    }
+
+    private void CloseContextMenu()
+    {
+        _itemContextMenu.gameObject.SetActive(false);
+    }
+
     private void SearchFirstEmptyCell()
     {
         foreach (Transform cell in _contentContainer.transform)
@@ -92,5 +110,11 @@ public class InventoryPanel : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void CheckLeftMouseButtonClick()
+    {
+        if (!_itemContextMenu.PointerInMenu)
+            CloseContextMenu();
     }
 }

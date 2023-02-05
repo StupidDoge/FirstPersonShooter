@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerInputHolder : MonoBehaviour
 {
 	public static Action OnInventoryUsed;
+	public static Action OnMouseLeftButtonClicked;
 
 	[Header("Character Input Values")]
 	public Vector2 move;
@@ -13,6 +14,7 @@ public class PlayerInputHolder : MonoBehaviour
 	public bool sprint;
 	public bool interact;
 	public bool inventory;
+	public bool leftMouseClick;
 	public bool rightMouseClick;
 
 	[Header("Movement Settings")]
@@ -75,6 +77,20 @@ public class PlayerInputHolder : MonoBehaviour
 		{
 			inventory = false;
 			OnInventoryUsed?.Invoke();
+		}
+	}
+
+	public void OnMouseLeftClick(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+			leftMouseClick = true;
+		}
+
+		if (context.canceled || context.performed)
+		{
+			leftMouseClick = false;
+			OnMouseLeftButtonClicked?.Invoke();
 		}
 	}
 

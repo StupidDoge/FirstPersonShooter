@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MouseLeftClick",
+                    "type": "Button",
+                    "id": "fc8406db-35bb-4b28-84a6-11faf29940f3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -276,6 +285,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "MouseRightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2885e3f-88ae-410e-bf18-5fe5cce8f2f6",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseLeftClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
