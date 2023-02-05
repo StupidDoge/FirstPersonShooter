@@ -13,6 +13,7 @@ public class PlayerInputHolder : MonoBehaviour
 	public bool sprint;
 	public bool interact;
 	public bool inventory;
+	public bool rightMouseClick;
 
 	[Header("Movement Settings")]
 	public bool analogMovement;
@@ -26,7 +27,7 @@ public class PlayerInputHolder : MonoBehaviour
 
 	private bool _canInteract = true;
 
-	public void OnMove(InputAction.CallbackContext context)
+    public void OnMove(InputAction.CallbackContext context)
 	{
 		MoveInput(context.ReadValue<Vector2>());
 	}
@@ -75,8 +76,20 @@ public class PlayerInputHolder : MonoBehaviour
 			inventory = false;
 			OnInventoryUsed?.Invoke();
 		}
-
 	}
+
+	public void OnMouseRightClick(InputAction.CallbackContext context)
+    {
+		if (context.started)
+		{
+			rightMouseClick = true;
+		}
+
+		if (context.canceled)
+        {
+			rightMouseClick = false;
+        }
+    }
 
 	public void MoveInput(Vector2 newMoveDirection)
 	{

@@ -11,7 +11,7 @@ public class InventoryItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _amountText;
 
     private int _amount;
-    
+
     public void SetInfo(Sprite sprite, int amount, int cellNumber, ItemBase itemSO)
     {
         _image.sprite = sprite;
@@ -24,5 +24,11 @@ public class InventoryItem : MonoBehaviour
     public void UpdateCount(int newCount)
     {
         _amountText.text = (_amount + newCount).ToString();
+    }
+
+    public void OpenContextMenu()
+    {
+        if (ItemSO.Equippable)
+            Debug.Log("equippable");
     }
 }
