@@ -20,5 +20,10 @@ public class ItemDropController : MonoBehaviour
     {
         GameObject item = Instantiate(itemSO.ItemPrefab);
         item.transform.position = _dropPoint.position;
+
+        if (item.TryGetComponent(out AmmoBoxPhysicalItem ammoBox))
+        {
+            ammoBox.SetAmount(amount);
+        }
     }
 }

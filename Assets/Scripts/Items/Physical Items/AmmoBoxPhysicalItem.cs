@@ -21,6 +21,11 @@ public class AmmoBoxPhysicalItem : PhysicalItemBase
         _ammoType = _ammoSO.Type;
     }
 
+    public void SetAmount(int amount)
+    {
+        _amount = amount;
+    }
+
     public override void Interact(Interactor interactor)
     {
         OnItemEquipped?.Invoke(_ammoSO, _amount);
