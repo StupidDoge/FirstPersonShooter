@@ -18,5 +18,6 @@ MonoBehaviour:
     type: 3}
   _equippable: 0
   _usable: 0
+  _stackable: 1
   _type: 0
   _damage: 5

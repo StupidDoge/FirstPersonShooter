@@ -11,10 +11,12 @@ public abstract class ItemBase : ScriptableObject
     [Header("Item settings")]
     [SerializeField] private bool _equippable;
     [SerializeField] private bool _usable;
+    [SerializeField] private bool _stackable;
 
     public string Name => _name;
     public Sprite ItemSprite => _sprite;
     public GameObject ItemPrefab => _itemPrefab;
     public bool Equippable => _equippable;
     public bool Usable => _usable;
+    public bool Stackable => _stackable;
 }

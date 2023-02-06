@@ -23,7 +23,6 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
 
     public override void Interact(Interactor interactor)
     {
-        OnItemEquipped?.Invoke(_rangeWeaponSO, baseAmount);
-        Destroy(gameObject);
+        OnItemEquipped?.Invoke(_rangeWeaponSO, baseAmount, gameObject);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class PhysicalItemBase : MonoBehaviour, IInteractable
 {
-    public static Action<ItemBase, int> OnItemEquipped;
+    public static Action<ItemBase, int, GameObject> OnItemEquipped;
 
     public readonly int baseAmount = 1;
 

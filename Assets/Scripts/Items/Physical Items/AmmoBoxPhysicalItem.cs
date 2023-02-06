@@ -28,7 +28,6 @@ public class AmmoBoxPhysicalItem : PhysicalItemBase
 
     public override void Interact(Interactor interactor)
     {
-        OnItemEquipped?.Invoke(_ammoSO, _amount);
-        Destroy(gameObject);
+        OnItemEquipped?.Invoke(_ammoSO, _amount, gameObject);
     }
 }

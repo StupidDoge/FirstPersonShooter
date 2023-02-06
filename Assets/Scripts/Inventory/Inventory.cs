@@ -26,7 +26,7 @@ public class Inventory : MonoBehaviour
         ItemContextMenu.OnItemDropped -= Delete;
     }
 
-    private void Add(ItemBase item, int amount)
+    private void Add(ItemBase item, int amount, GameObject physicalItem)
     {
         if (_inventory.Count >= INVENTORY_CAPACITY)
         {
@@ -36,13 +36,18 @@ public class Inventory : MonoBehaviour
 
         if (_inventory.ContainsKey(item))
         {
-            _inventory[item] += amount;
-            OnItemUpdated?.Invoke(item, amount);
+            if (item.Stackable)
+            {
+                _inventory[item] += amount;
+                OnItemUpdated?.Invoke(item, amount);
+                Destroy(physicalItem);
+            }
         }
-        else
+        else if (!_inventory.ContainsKey(item))
         {
             _inventory.Add(item, amount);
             OnItemAdded?.Invoke(item, amount);
+            Destroy(physicalItem);
         }
     }
 
