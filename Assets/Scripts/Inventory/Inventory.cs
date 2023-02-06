@@ -6,6 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public static Action<ItemBase, int> OnItemAdded;
     public static Action<ItemBase, int> OnItemUpdated;
+    public static Action<ItemBase> OnItemRemoved;
 
     public static readonly int INVENTORY_CAPACITY = 16;
 
@@ -16,11 +17,13 @@ public class Inventory : MonoBehaviour
     private void OnEnable()
     {
         PhysicalItemBase.OnItemEquipped += Add;
+        ItemContextMenu.OnItemDropped += Delete;
     }
 
     private void OnDisable()
     {
         PhysicalItemBase.OnItemEquipped -= Add;
+        ItemContextMenu.OnItemDropped -= Delete;
     }
 
     private void Add(ItemBase item, int amount)
@@ -41,5 +44,11 @@ public class Inventory : MonoBehaviour
             _inventory.Add(item, amount);
             OnItemAdded?.Invoke(item, amount);
         }
+    }
+
+    private void Delete(ItemBase item, int amount)
+    {
+        _inventory.Remove(item);
+        OnItemRemoved?.Invoke(item);
     }
 }

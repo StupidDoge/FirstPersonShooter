@@ -33,6 +33,7 @@ public class InventoryPanel : MonoBehaviour
         PlayerInputHolder.OnMouseLeftButtonClicked += CheckLeftMouseButtonClick;
         Inventory.OnItemAdded += AddItem;
         Inventory.OnItemUpdated += UpdateItem;
+        Inventory.OnItemRemoved += RemoveItem;
         InventoryItem.OnContextMenuOpened += OpenContextMenu;
     }
 
@@ -42,6 +43,7 @@ public class InventoryPanel : MonoBehaviour
         PlayerInputHolder.OnMouseLeftButtonClicked -= CheckLeftMouseButtonClick;
         Inventory.OnItemAdded -= AddItem;
         Inventory.OnItemUpdated -= UpdateItem;
+        Inventory.OnItemRemoved -= RemoveItem;
         InventoryItem.OnContextMenuOpened -= OpenContextMenu;
     }
 
@@ -89,10 +91,25 @@ public class InventoryPanel : MonoBehaviour
         }
     }
 
-    private void OpenContextMenu(ItemBase itemSO)
+    private void RemoveItem(ItemBase item)
+    {
+        foreach (Transform cell in _contentContainer.transform)
+        {
+            if (cell.transform.childCount > 0)
+            {
+                InventoryItem itemInCell = cell.GetComponentInChildren<InventoryItem>();
+                if (itemInCell.ItemSO == item)
+                {
+                    Destroy(itemInCell.gameObject);
+                }
+            }
+        }
+    }
+
+    private void OpenContextMenu(ItemBase itemSO, int amount)
     {
         _itemContextMenu.gameObject.SetActive(true);
-        _itemContextMenu.SetButtons(itemSO.Name, itemSO.Equippable, itemSO.Usable);
+        _itemContextMenu.SetContextMenu(itemSO, amount);
     }
 
     private void CloseContextMenu()

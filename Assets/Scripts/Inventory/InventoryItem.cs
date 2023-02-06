@@ -5,7 +5,7 @@ using System;
 
 public class InventoryItem : MonoBehaviour
 {
-    public static Action<ItemBase> OnContextMenuOpened;
+    public static Action<ItemBase, int> OnContextMenuOpened;
 
     public int CellNumber { get; set; }
     public ItemBase ItemSO { get; private set; }
@@ -27,10 +27,11 @@ public class InventoryItem : MonoBehaviour
     public void UpdateCount(int newCount)
     {
         _amountText.text = (_amount + newCount).ToString();
+        _amount += newCount;
     }
 
     public void OpenContextMenu()
     {
-        OnContextMenuOpened?.Invoke(ItemSO);
+        OnContextMenuOpened?.Invoke(ItemSO, _amount);
     }
 }
