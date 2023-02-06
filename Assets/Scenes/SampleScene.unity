@@ -1479,6 +1479,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dropPoint: {fileID: 1246508979}
+--- !u!114 &576634193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576634175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660610602217bed49b372e29efba79de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <PistolAmmoAmount>k__BackingField: 0
+  <RifleAmmoAmount>k__BackingField: 0
+  <ShotgunAmmoAmount>k__BackingField: 0
 --- !u!1001 &594100223
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class Inventory : MonoBehaviour
     public static Action<ItemBase, int> OnItemAdded;
     public static Action<ItemBase, int> OnItemUpdated;
     public static Action<ItemBase> OnItemRemoved;
+    public static Action<AmmoType, int> OnAmmoAmountChanged;
 
     public static readonly int INVENTORY_CAPACITY = 16;
 
@@ -57,12 +58,20 @@ public class Inventory : MonoBehaviour
             OnItemAdded?.Invoke(item, amount);
             Destroy(physicalItem);
         }
+
+        SearchForAmmo();
     }
 
     private void Delete(ItemBase item, int amount)
     {
         _inventory.Remove(item);
         OnItemRemoved?.Invoke(item);
+
+        if (item.GetType() == typeof(AmmoSO))
+        {
+            AmmoSO ammo = (AmmoSO)item;
+            OnAmmoAmountChanged(ammo.Type, 0);
+        }
     }
 
     private void AddAmmo(RangeWeaponPhysicalItem weapon)
@@ -88,6 +97,18 @@ public class Inventory : MonoBehaviour
             AmmoSO ammo = weapon.WeaponTemplate.AmmoBoxPrefab.AmmoTemplate;
             _inventory.Add(ammo, weapon.AmmoClip);
             OnItemAdded?.Invoke(ammo, weapon.AmmoClip);
+        }
+    }
+
+    private void SearchForAmmo()
+    {
+        foreach (KeyValuePair<ItemBase, int> item in _inventory)
+        {
+            if (item.Key.GetType() == typeof(AmmoSO))
+            {
+                AmmoSO ammo = (AmmoSO)item.Key;
+                OnAmmoAmountChanged?.Invoke(ammo.Type, item.Value);
+            }
         }
     }
 }
