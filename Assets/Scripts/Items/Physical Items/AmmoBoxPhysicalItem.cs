@@ -10,6 +10,8 @@ public class AmmoBoxPhysicalItem : PhysicalItemBase
     private float _damage;
     private AmmoType _ammoType;
 
+    public AmmoSO AmmoTemplate => _ammoSO;
+
     private void Start()
     {
         SetAmmoBoxStats();

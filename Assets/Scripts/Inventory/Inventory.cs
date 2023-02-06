@@ -42,6 +42,14 @@ public class Inventory : MonoBehaviour
                 OnItemUpdated?.Invoke(item, amount);
                 Destroy(physicalItem);
             }
+            else
+            {
+                if (physicalItem.TryGetComponent(out RangeWeaponPhysicalItem weapon))
+                {
+                    Destroy(physicalItem);
+                    AddAmmo(weapon);
+                }
+            }
         }
         else if (!_inventory.ContainsKey(item))
         {
@@ -55,5 +63,31 @@ public class Inventory : MonoBehaviour
     {
         _inventory.Remove(item);
         OnItemRemoved?.Invoke(item);
+    }
+
+    private void AddAmmo(RangeWeaponPhysicalItem weapon)
+    {
+        bool ammoFound = false;
+        foreach(KeyValuePair<ItemBase, int> item in _inventory)
+        {
+            if (item.Key.GetType() == typeof(AmmoSO))
+            {
+                AmmoSO ammo = (AmmoSO)item.Key;
+                if (ammo.Type == weapon.WeaponTemplate.WeaponAmmoType)
+                {
+                    ammoFound = true;
+                    _inventory[item.Key] += weapon.AmmoClip;
+                    OnItemUpdated?.Invoke(item.Key, weapon.AmmoClip);
+                    return;
+                }
+            }
+        }
+
+        if (!ammoFound)
+        {
+            AmmoSO ammo = weapon.WeaponTemplate.AmmoBoxPrefab.AmmoTemplate;
+            _inventory.Add(ammo, weapon.AmmoClip);
+            OnItemAdded?.Invoke(ammo, weapon.AmmoClip);
+        }
     }
 }

@@ -7,8 +7,11 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
 {
     [SerializeField] private RangeWeaponSO _rangeWeaponSO;
 
-    private float _ammoClip;
+    private int _ammoClip;
     private float _fireRate;
+
+    public RangeWeaponSO WeaponTemplate => _rangeWeaponSO;
+    public int AmmoClip => _ammoClip;
 
     private void Start()
     {
