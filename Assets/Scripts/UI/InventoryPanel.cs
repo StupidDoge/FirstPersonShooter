@@ -37,6 +37,8 @@ public class InventoryPanel : MonoBehaviour
         Inventory.OnItemRemoved += RemoveItem;
         InventoryItem.OnContextMenuOpened += OpenContextMenu;
         Inventory.OnActiveItemSet += MoveItemToActiveCell;
+        Inventory.OnItemFromActiveSlotAdded += SearchFirstEmptyCell;
+        DraggableItem.OnItemDragged += SearchFirstEmptyCell;
     }
 
     private void OnDisable()
@@ -48,6 +50,8 @@ public class InventoryPanel : MonoBehaviour
         Inventory.OnItemRemoved -= RemoveItem;
         InventoryItem.OnContextMenuOpened -= OpenContextMenu;
         Inventory.OnActiveItemSet -= MoveItemToActiveCell;
+        Inventory.OnItemFromActiveSlotAdded -= SearchFirstEmptyCell;
+        DraggableItem.OnItemDragged -= SearchFirstEmptyCell;
     }
 
     private void InventoryPanelSetActive()
@@ -152,9 +156,10 @@ public class InventoryPanel : MonoBehaviour
                     InventoryItem item = cell.GetComponentInChildren<InventoryItem>();
                     item.transform.SetParent(_activeItemCell);
                     item.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-                    Debug.Log(itemSO.Name);
                 }
             }
         }
+
+        SearchFirstEmptyCell();
     }
 }

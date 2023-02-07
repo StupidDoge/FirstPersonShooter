@@ -8,7 +8,9 @@ public class Inventory : MonoBehaviour
     public static Action<ItemBase, int> OnItemUpdated;
     public static Action<ItemBase> OnItemRemoved;
     public static Action<ItemBase> OnActiveItemSet;
+    public static Action OnActiveItemRemoved;
     public static Action<AmmoType, int> OnAmmoAmountChanged;
+    public static Action OnItemFromActiveSlotAdded;
 
     public static readonly int INVENTORY_CAPACITY = 16;
 
@@ -22,6 +24,7 @@ public class Inventory : MonoBehaviour
         PhysicalItemBase.OnItemEquipped += Add;
         ItemContextMenu.OnItemDropped += Delete;
         ItemContextMenu.OnItemEquipped += SetActiveItem;
+        InventoryCell.OnItemUnequipped += RemoveActiveItem;
     }
 
     private void OnDisable()
@@ -29,6 +32,7 @@ public class Inventory : MonoBehaviour
         PhysicalItemBase.OnItemEquipped -= Add;
         ItemContextMenu.OnItemDropped -= Delete;
         ItemContextMenu.OnItemEquipped -= SetActiveItem;
+        InventoryCell.OnItemUnequipped -= RemoveActiveItem;
     }
 
     private void Add(ItemBase item, int amount, GameObject physicalItem)
@@ -64,6 +68,29 @@ public class Inventory : MonoBehaviour
         }
 
         SearchForAmmo();
+    }
+
+    private void AddFromActive(ItemBase item)
+    {
+        if (_inventory.Count >= INVENTORY_CAPACITY)
+        {
+            Debug.Log("Inventory is full");
+            return;
+        }
+
+        if (_inventory.ContainsKey(item))
+        {
+            if (item.Stackable)
+            {
+                _inventory[item] += 1;
+                OnItemUpdated?.Invoke(item, 1);
+            }
+        }
+        else if (!_inventory.ContainsKey(item))
+        {
+            _inventory.Add(item, 1);
+            OnItemFromActiveSlotAdded?.Invoke();
+        }
     }
 
     private void Delete(ItemBase item, int amount)
@@ -124,10 +151,17 @@ public class Inventory : MonoBehaviour
         _activeItem = item;
         OnActiveItemSet?.Invoke(item);
         Delete(item, 1);
+    }
 
-        foreach (KeyValuePair<ItemBase, int> i in _inventory)
+    private void RemoveActiveItem()
+    {
+        AddFromActive(_activeItem);
+        _activeItem = null;
+        OnActiveItemRemoved?.Invoke();
+
+        /*foreach (KeyValuePair<ItemBase, int> i in _inventory)
         {
             Debug.Log(i.Key.Name);
-        }
+        }*/
     }
 }

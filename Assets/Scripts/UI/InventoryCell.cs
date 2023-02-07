@@ -1,8 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 public class InventoryCell : MonoBehaviour, IDropHandler
 {
+    public static Action OnItemUnequipped;
+
     [field: SerializeField] public int Id { get; set; }
     public InventoryItem Item { get; set; }
 
@@ -22,5 +25,12 @@ public class InventoryCell : MonoBehaviour, IDropHandler
         InventoryItem inventoryItem = dropped.GetComponent<InventoryItem>();
         inventoryItem.CellNumber = Id;
         draggableItem.ParentAfterDrag = transform;
+
+        if (inventoryItem.IsEquipped)
+        {
+            inventoryItem.IsEquipped = false;
+            OnItemUnequipped?.Invoke();
+            return;
+        }
     }
 }

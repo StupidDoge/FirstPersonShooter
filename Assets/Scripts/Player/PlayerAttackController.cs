@@ -14,13 +14,15 @@ public class PlayerAttackController : MonoBehaviour
     private void OnEnable()
     {
         Inventory.OnAmmoAmountChanged += ChangeAmmoAmount;
-        ItemContextMenu.OnItemEquipped += EquipItem;
+        Inventory.OnActiveItemSet += EquipItem;
+        Inventory.OnActiveItemRemoved += UnequipItem;
     }
 
     private void OnDisable()
     {
         Inventory.OnAmmoAmountChanged -= ChangeAmmoAmount;
-        ItemContextMenu.OnItemEquipped -= EquipItem;
+        Inventory.OnActiveItemSet -= EquipItem;
+        Inventory.OnActiveItemRemoved -= UnequipItem;
     }
 
     private void ChangeAmmoAmount(AmmoType ammoType, int amount)
@@ -49,5 +51,11 @@ public class PlayerAttackController : MonoBehaviour
         item.GetComponent<Rigidbody>().isKinematic = true;
         item.GetComponent<BoxCollider>().enabled = false;
         ItemIsEquipped = true;
+    }
+
+    private void UnequipItem()
+    {
+        Destroy(_itemContainer.GetComponentInChildren<PhysicalItemBase>().gameObject);
+        ItemIsEquipped = false;
     }
 }

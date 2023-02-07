@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 public class ActiveItemCell : MonoBehaviour, IDropHandler
 {
@@ -16,13 +17,16 @@ public class ActiveItemCell : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (transform.childCount != 0 || eventData.pointerDrag == null)
+        if (transform.childCount != 0 || eventData.pointerDrag == null || 
+            !eventData.pointerDrag.GetComponent<InventoryItem>().ItemSO.Equippable)
             return;
 
         GameObject dropped = eventData.pointerDrag;
         DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
         InventoryItem inventoryItem = dropped.GetComponent<InventoryItem>();
         inventoryItem.CellNumber = Id;
+        inventoryItem.IsEquipped = true;
         draggableItem.ParentAfterDrag = transform;
+        ItemContextMenu.OnItemEquipped?.Invoke(inventoryItem.ItemSO);
     }
 }
