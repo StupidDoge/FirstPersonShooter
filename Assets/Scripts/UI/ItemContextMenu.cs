@@ -7,6 +7,7 @@ using System;
 public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public static Action<ItemBase, int> OnItemDropped;
+    public static Action<ItemBase> OnItemEquipped;
 
     [SerializeField] private TextMeshProUGUI _itemName;
     [SerializeField] private Button _useButton;
@@ -36,7 +37,7 @@ public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void EquipItem()
     {
-        Debug.Log("equip");
+        OnItemEquipped?.Invoke(_itemSO);
     }
 
     public void DropItem()
