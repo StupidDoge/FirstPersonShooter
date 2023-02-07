@@ -16,17 +16,19 @@ public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public bool PointerInMenu { get; private set; }
 
     private ItemBase _itemSO;
+    private InventoryItem _item;
     private int _amount;
 
-    public void SetContextMenu(ItemBase itemSO, int amount)
+    public void SetContextMenu(InventoryItem inventoryItem, int amount)
     {
-        _itemSO = itemSO;
+        _item = inventoryItem;
+        _itemSO = inventoryItem.ItemSO;
         _amount = amount;
-        _itemName.text = itemSO.Name + " " + _amount;
-        if (itemSO.Equippable)
+        _itemName.text = inventoryItem.ItemSO.Name + " " + _amount;
+        if (inventoryItem.ItemSO.Equippable)
             _equipButton.gameObject.SetActive(true);
 
-        if (itemSO.Usable)
+        if (inventoryItem.ItemSO.Usable)
             _useButton.gameObject.SetActive(true);
     }
 
@@ -37,6 +39,7 @@ public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void EquipItem()
     {
+        _item.IsEquipped = true;
         OnItemEquipped?.Invoke(_itemSO);
     }
 

@@ -113,10 +113,10 @@ public class InventoryPanel : MonoBehaviour
         }
     }
 
-    private void OpenContextMenu(ItemBase itemSO, int amount)
+    private void OpenContextMenu(InventoryItem inventoryItem, int amount)
     {
         _itemContextMenu.gameObject.SetActive(true);
-        _itemContextMenu.SetContextMenu(itemSO, amount);
+        _itemContextMenu.SetContextMenu(inventoryItem, amount);
     }
 
     private void CloseContextMenu()

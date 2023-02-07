@@ -5,7 +5,7 @@ using System;
 
 public class InventoryItem : MonoBehaviour
 {
-    public static Action<ItemBase, int> OnContextMenuOpened;
+    public static Action<InventoryItem, int> OnContextMenuOpened;
 
     public int CellNumber { get; set; }
     public bool IsEquipped { get; set; }
@@ -34,6 +34,6 @@ public class InventoryItem : MonoBehaviour
     public void OpenContextMenu()
     {
         if (!IsEquipped)
-            OnContextMenuOpened?.Invoke(ItemSO, _amount);
+            OnContextMenuOpened?.Invoke(this, _amount);
     }
 }
