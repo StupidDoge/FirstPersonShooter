@@ -8,6 +8,7 @@ public class InventoryItem : MonoBehaviour
     public static Action<ItemBase, int> OnContextMenuOpened;
 
     public int CellNumber { get; set; }
+    public bool IsEquipped { get; set; }
     public ItemBase ItemSO { get; private set; }
 
     [SerializeField] private Image _image;

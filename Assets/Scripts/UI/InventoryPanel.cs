@@ -9,6 +9,7 @@ public class InventoryPanel : MonoBehaviour
     [SerializeField] private Inventory _inventory;
     [SerializeField] private GameObject _inventoryItem;
     [SerializeField] private ItemContextMenu _itemContextMenu;
+    [SerializeField] private Transform _activeItemCell;
 
     private List<InventoryCell> _emptyCells;
 
@@ -35,6 +36,7 @@ public class InventoryPanel : MonoBehaviour
         Inventory.OnItemUpdated += UpdateItem;
         Inventory.OnItemRemoved += RemoveItem;
         InventoryItem.OnContextMenuOpened += OpenContextMenu;
+        Inventory.OnActiveItemSet += MoveItemToActiveCell;
     }
 
     private void OnDisable()
@@ -45,6 +47,7 @@ public class InventoryPanel : MonoBehaviour
         Inventory.OnItemUpdated -= UpdateItem;
         Inventory.OnItemRemoved -= RemoveItem;
         InventoryItem.OnContextMenuOpened -= OpenContextMenu;
+        Inventory.OnActiveItemSet -= MoveItemToActiveCell;
     }
 
     private void InventoryPanelSetActive()
@@ -133,5 +136,25 @@ public class InventoryPanel : MonoBehaviour
     {
         if (!_itemContextMenu.PointerInMenu)
             CloseContextMenu();
+    }
+
+    private void MoveItemToActiveCell(ItemBase itemSO)
+    {
+        if (_activeItemCell.childCount != 0)
+            return;
+
+        foreach (Transform cell in _contentContainer.transform)
+        {
+            if (cell.transform.childCount != 0)
+            {
+                if (cell.GetComponentInChildren<InventoryItem>().ItemSO == itemSO)
+                {
+                    InventoryItem item = cell.GetComponentInChildren<InventoryItem>();
+                    item.transform.SetParent(_activeItemCell);
+                    item.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    Debug.Log(itemSO.Name);
+                }
+            }
+        }
     }
 }

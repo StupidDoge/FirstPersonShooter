@@ -7,11 +7,13 @@ public class Inventory : MonoBehaviour
     public static Action<ItemBase, int> OnItemAdded;
     public static Action<ItemBase, int> OnItemUpdated;
     public static Action<ItemBase> OnItemRemoved;
+    public static Action<ItemBase> OnActiveItemSet;
     public static Action<AmmoType, int> OnAmmoAmountChanged;
 
     public static readonly int INVENTORY_CAPACITY = 16;
 
     private Dictionary<ItemBase, int> _inventory = new(16);
+    private ItemBase _activeItem;
 
     public Dictionary<ItemBase, int> InventoryDictionary => _inventory;
 
@@ -19,12 +21,14 @@ public class Inventory : MonoBehaviour
     {
         PhysicalItemBase.OnItemEquipped += Add;
         ItemContextMenu.OnItemDropped += Delete;
+        ItemContextMenu.OnItemEquipped += SetActiveItem;
     }
 
     private void OnDisable()
     {
         PhysicalItemBase.OnItemEquipped -= Add;
         ItemContextMenu.OnItemDropped -= Delete;
+        ItemContextMenu.OnItemEquipped -= SetActiveItem;
     }
 
     private void Add(ItemBase item, int amount, GameObject physicalItem)
@@ -109,6 +113,21 @@ public class Inventory : MonoBehaviour
                 AmmoSO ammo = (AmmoSO)item.Key;
                 OnAmmoAmountChanged?.Invoke(ammo.Type, item.Value);
             }
+        }
+    }
+
+    private void SetActiveItem(ItemBase item)
+    {
+        if (_activeItem != null)
+            return;
+
+        _activeItem = item;
+        OnActiveItemSet?.Invoke(item);
+        Delete(item, 1);
+
+        foreach (KeyValuePair<ItemBase, int> i in _inventory)
+        {
+            Debug.Log(i.Key.Name);
         }
     }
 }
