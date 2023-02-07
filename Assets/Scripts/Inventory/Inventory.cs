@@ -78,19 +78,8 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        if (_inventory.ContainsKey(item))
-        {
-            if (item.Stackable)
-            {
-                _inventory[item] += 1;
-                OnItemUpdated?.Invoke(item, 1);
-            }
-        }
-        else if (!_inventory.ContainsKey(item))
-        {
-            _inventory.Add(item, 1);
-            OnItemFromActiveSlotAdded?.Invoke();
-        }
+        _inventory.Add(item, 1);
+        OnItemFromActiveSlotAdded?.Invoke();
     }
 
     private void Delete(ItemBase item, int amount)

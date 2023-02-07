@@ -33,6 +33,7 @@ public class InventoryItem : MonoBehaviour
 
     public void OpenContextMenu()
     {
-        OnContextMenuOpened?.Invoke(ItemSO, _amount);
+        if (!IsEquipped)
+            OnContextMenuOpened?.Invoke(ItemSO, _amount);
     }
 }
