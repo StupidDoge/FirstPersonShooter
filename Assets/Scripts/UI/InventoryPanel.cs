@@ -63,6 +63,7 @@ public class InventoryPanel : MonoBehaviour
             // JUST FOR TESTING! DO IT PROPERLY LATER!
             FindObjectOfType<FirstPersonController>().GetComponent<FirstPersonController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
+            GlobalUIController.AnyUIPanelIsActive = false;
         }
         else
         {
@@ -70,6 +71,7 @@ public class InventoryPanel : MonoBehaviour
             // JUST FOR TESTING! DO IT PROPERLY LATER!
             FindObjectOfType<FirstPersonController>().GetComponent<FirstPersonController>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
+            GlobalUIController.AnyUIPanelIsActive = true;
         }
     }
 

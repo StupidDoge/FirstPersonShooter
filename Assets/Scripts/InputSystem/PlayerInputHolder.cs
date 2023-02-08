@@ -87,7 +87,7 @@ public class PlayerInputHolder : MonoBehaviour
 			leftMouseClick = true;
 		}
 
-		if (context.canceled || context.performed)
+		if (context.canceled)
 		{
 			leftMouseClick = false;
 			OnMouseLeftButtonClicked?.Invoke();

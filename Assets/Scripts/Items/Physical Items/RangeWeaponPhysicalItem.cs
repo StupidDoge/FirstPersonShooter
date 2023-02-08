@@ -12,8 +12,9 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
 
     public RangeWeaponSO WeaponTemplate => _rangeWeaponSO;
     public int AmmoClip => _ammoClip;
+    public float FireRate => _fireRate;
 
-    private void Start()
+    private void Awake()
     {
         SetWeaponStats();
     }
@@ -27,5 +28,10 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
     public override void Interact(Interactor interactor)
     {
         OnItemEquipped?.Invoke(_rangeWeaponSO, baseAmount, gameObject);
+    }
+
+    public void Shoot()
+    {
+        Debug.Log(_rangeWeaponSO.Name + " shooting");
     }
 }

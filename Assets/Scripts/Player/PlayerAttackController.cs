@@ -11,6 +11,17 @@ public class PlayerAttackController : MonoBehaviour
 
     public bool ItemIsEquipped { get; private set; }
 
+    [SerializeField] private RangeWeaponPhysicalItem _equippedWeapon;
+    [SerializeField] private float _currentWeaponFireRate;
+    private float _time;
+
+    private PlayerInputHolder _playerInputHolder;
+
+    private void Start()
+    {
+        _playerInputHolder = GetComponent<PlayerInputHolder>();
+    }
+
     private void OnEnable()
     {
         Inventory.OnAmmoAmountChanged += ChangeAmmoAmount;
@@ -23,6 +34,24 @@ public class PlayerAttackController : MonoBehaviour
         Inventory.OnAmmoAmountChanged -= ChangeAmmoAmount;
         Inventory.OnActiveItemSet -= EquipItem;
         Inventory.OnActiveItemRemoved -= UnequipItem;
+    }
+
+    private void Update()
+    {
+        _time += Time.deltaTime;
+        if (!GlobalUIController.AnyUIPanelIsActive && _equippedWeapon != null)
+        {
+            if (_playerInputHolder.rightMouseClick)
+                Debug.Log("right click");
+            if (_playerInputHolder.leftMouseClick)
+            {
+                if (_time >= _currentWeaponFireRate)
+                {
+                    _time = 0.0f;
+                    _equippedWeapon.Shoot();
+                }
+            }
+        }
     }
 
     private void ChangeAmmoAmount(AmmoType ammoType, int amount)
@@ -46,16 +75,24 @@ public class PlayerAttackController : MonoBehaviour
         if (ItemIsEquipped)
             return;
 
-        itemSO.ItemPrefab.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        GameObject item = Instantiate(itemSO.ItemPrefab, _itemContainer);
-        item.GetComponent<Rigidbody>().isKinematic = true;
-        item.GetComponent<BoxCollider>().enabled = false;
-        ItemIsEquipped = true;
+        if (itemSO.GetType() == typeof(RangeWeaponSO))
+        {
+            RangeWeaponSO weaponSO = (RangeWeaponSO)itemSO;
+            GameObject item = Instantiate(weaponSO.ItemPrefab, _itemContainer);
+            item.transform.localPosition = weaponSO.HoldOffset;
+            item.transform.localRotation = Quaternion.identity;
+            item.GetComponent<Rigidbody>().isKinematic = true;
+            item.GetComponent<BoxCollider>().enabled = false;
+            ItemIsEquipped = true;
+            _equippedWeapon = weaponSO.ItemPrefab.GetComponent<RangeWeaponPhysicalItem>();
+            _currentWeaponFireRate = weaponSO.FireRate;
+        }
     }
 
     private void UnequipItem()
     {
         Destroy(_itemContainer.GetComponentInChildren<PhysicalItemBase>().gameObject);
         ItemIsEquipped = false;
+        _equippedWeapon = null;
     }
 }
