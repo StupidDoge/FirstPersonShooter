@@ -11,8 +11,11 @@ public class PlayerAttackController : MonoBehaviour
 
     public bool ItemIsEquipped { get; private set; }
 
-    [SerializeField] private RangeWeaponPhysicalItem _equippedWeapon;
-    [SerializeField] private float _currentWeaponFireRate;
+    private RangeWeaponPhysicalItem _equippedWeapon;
+    private float _currentWeaponFireRate;
+    private Vector3 _holdPosition;
+    private Vector3 _aimPosition;
+
     private float _time;
 
     private PlayerInputHolder _playerInputHolder;
@@ -41,8 +44,6 @@ public class PlayerAttackController : MonoBehaviour
         _time += Time.deltaTime;
         if (!GlobalUIController.AnyUIPanelIsActive && _equippedWeapon != null)
         {
-            if (_playerInputHolder.rightMouseClick)
-                Debug.Log("right click");
             if (_playerInputHolder.leftMouseClick)
             {
                 if (_time >= _currentWeaponFireRate)
@@ -51,6 +52,8 @@ public class PlayerAttackController : MonoBehaviour
                     _equippedWeapon.Shoot();
                 }
             }
+
+            Aim();
         }
     }
 
@@ -84,8 +87,11 @@ public class PlayerAttackController : MonoBehaviour
             item.GetComponent<Rigidbody>().isKinematic = true;
             item.GetComponent<BoxCollider>().enabled = false;
             ItemIsEquipped = true;
-            _equippedWeapon = weaponSO.ItemPrefab.GetComponent<RangeWeaponPhysicalItem>();
+            _equippedWeapon = item.GetComponent<RangeWeaponPhysicalItem>();
             _currentWeaponFireRate = weaponSO.FireRate;
+
+            _holdPosition = weaponSO.HoldOffset;
+            _aimPosition = weaponSO.AimPosition;
         }
     }
 
@@ -94,5 +100,13 @@ public class PlayerAttackController : MonoBehaviour
         Destroy(_itemContainer.GetComponentInChildren<PhysicalItemBase>().gameObject);
         ItemIsEquipped = false;
         _equippedWeapon = null;
+    }
+
+    private void Aim()
+    {
+        if (_playerInputHolder.rightMouseClick)
+            _equippedWeapon.transform.localPosition = _aimPosition;
+        else
+            _equippedWeapon.transform.localPosition = _holdPosition;
     }
 }

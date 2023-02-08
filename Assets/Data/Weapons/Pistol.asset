@@ -21,6 +21,7 @@ MonoBehaviour:
   _stackable: 0
   _weaponType: 1
   _holdOffset: {x: -0.04, y: 0.05, z: -0.06}
+  _aimPosition: {x: -0.18, y: 0.05, z: -0.06}
   _ammoClip: 8
   _fireRate: 1
   _ammoType: 0
