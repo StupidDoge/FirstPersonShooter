@@ -18,6 +18,7 @@ public class Inventory : MonoBehaviour
     private ItemBase _activeItem;
 
     public Dictionary<ItemBase, int> InventoryDictionary => _inventory;
+    public ItemBase ActiveItem => _activeItem;
 
     private void OnEnable()
     {

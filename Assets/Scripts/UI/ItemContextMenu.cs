@@ -17,7 +17,13 @@ public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private ItemBase _itemSO;
     private InventoryItem _item;
+    private Inventory _inventory;
     private int _amount;
+
+    private void Start()
+    {
+        _inventory = FindObjectOfType<Inventory>();
+    }
 
     public void SetContextMenu(InventoryItem inventoryItem, int amount)
     {
@@ -39,13 +45,18 @@ public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void EquipItem()
     {
+        if (_inventory.ActiveItem != null)
+            return;
+
         _item.IsEquipped = true;
         OnItemEquipped?.Invoke(_itemSO);
+        gameObject.SetActive(false);
     }
 
     public void DropItem()
     {
         OnItemDropped?.Invoke(_itemSO, _amount);
+        gameObject.SetActive(false);
     }
 
     private void OnDisable()
