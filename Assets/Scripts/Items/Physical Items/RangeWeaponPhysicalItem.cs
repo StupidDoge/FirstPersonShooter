@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class RangeWeaponPhysicalItem : PhysicalItemBase
@@ -13,6 +14,8 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
     public RangeWeaponSO WeaponTemplate => _rangeWeaponSO;
     public int AmmoClip => _ammoClip;
     public float FireRate => _fireRate;
+
+    public bool CanShoot { get; private set; } = true;
 
     private void Awake()
     {
@@ -30,8 +33,15 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
         OnItemEquipped?.Invoke(_rangeWeaponSO, baseAmount, gameObject);
     }
 
-    public void Shoot()
+    public async void Shoot()
     {
+        CanShoot = false;
+        int milliseconds = (int)(_fireRate * 1000);
+
         Debug.Log(_rangeWeaponSO.Name + " shooting");
+
+        await Task.Delay(milliseconds);
+
+        CanShoot = true;
     }
 }

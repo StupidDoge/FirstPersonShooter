@@ -12,11 +12,8 @@ public class PlayerAttackController : MonoBehaviour
     public bool ItemIsEquipped { get; private set; }
 
     private RangeWeaponPhysicalItem _equippedWeapon;
-    private float _currentWeaponFireRate;
     private Vector3 _holdPosition;
     private Vector3 _aimPosition;
-
-    private float _time;
 
     private PlayerInputHolder _playerInputHolder;
 
@@ -41,16 +38,12 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Update()
     {
-        _time += Time.deltaTime;
         if (!GlobalUIController.AnyUIPanelIsActive && _equippedWeapon != null)
         {
             if (_playerInputHolder.leftMouseClick)
             {
-                if (_time >= _currentWeaponFireRate)
-                {
-                    _time = 0.0f;
+                if (_equippedWeapon.CanShoot)
                     _equippedWeapon.Shoot();
-                }
             }
 
             Aim();
@@ -88,7 +81,6 @@ public class PlayerAttackController : MonoBehaviour
             item.GetComponent<BoxCollider>().enabled = false;
             ItemIsEquipped = true;
             _equippedWeapon = item.GetComponent<RangeWeaponPhysicalItem>();
-            _currentWeaponFireRate = weaponSO.FireRate;
 
             _holdPosition = weaponSO.HoldOffset;
             _aimPosition = weaponSO.AimPosition;
