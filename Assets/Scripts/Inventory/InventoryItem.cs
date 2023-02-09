@@ -31,6 +31,12 @@ public class InventoryItem : MonoBehaviour
         _amount += newCount;
     }
 
+    public void DecreaseCount()
+    {
+        _amount--;
+        _amountText.text = _amount.ToString();
+    }
+
     public void OpenContextMenu()
     {
         if (!IsEquipped)

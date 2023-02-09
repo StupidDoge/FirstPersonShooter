@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class Inventory : MonoBehaviour
         ItemContextMenu.OnItemDropped += Delete;
         ItemContextMenu.OnItemEquipped += SetActiveItem;
         InventoryCell.OnItemUnequipped += RemoveActiveItem;
+        RangeWeaponPhysicalItem.OnWeaponShot += DecreaseAmmo;
     }
 
     private void OnDisable()
@@ -34,6 +36,7 @@ public class Inventory : MonoBehaviour
         ItemContextMenu.OnItemDropped -= Delete;
         ItemContextMenu.OnItemEquipped -= SetActiveItem;
         InventoryCell.OnItemUnequipped -= RemoveActiveItem;
+        RangeWeaponPhysicalItem.OnWeaponShot -= DecreaseAmmo;
     }
 
     private void Add(ItemBase item, int amount, GameObject physicalItem)
@@ -50,6 +53,11 @@ public class Inventory : MonoBehaviour
             {
                 _inventory[item] += amount;
                 OnItemUpdated?.Invoke(item, amount);
+                if (item.GetType() == typeof(AmmoSO))
+                {
+                    AmmoSO ammoSO = (AmmoSO)item;
+                    OnAmmoAmountChanged?.Invoke(ammoSO.Type, amount);
+                }
                 Destroy(physicalItem);
             }
             else
@@ -65,10 +73,13 @@ public class Inventory : MonoBehaviour
         {
             _inventory.Add(item, amount);
             OnItemAdded?.Invoke(item, amount);
+            if (item.GetType() == typeof(AmmoSO))
+            {
+                AmmoSO ammoSO = (AmmoSO)item;
+                OnAmmoAmountChanged?.Invoke(ammoSO.Type, amount);
+            }
             Destroy(physicalItem);
         }
-
-        SearchForAmmo();
     }
 
     private void AddFromActive(ItemBase item)
@@ -91,7 +102,7 @@ public class Inventory : MonoBehaviour
         if (item.GetType() == typeof(AmmoSO))
         {
             AmmoSO ammo = (AmmoSO)item;
-            OnAmmoAmountChanged(ammo.Type, 0);
+            OnAmmoAmountChanged(ammo.Type, -amount);
         }
     }
 
@@ -107,6 +118,7 @@ public class Inventory : MonoBehaviour
                 {
                     ammoFound = true;
                     _inventory[item.Key] += weapon.AmmoClip;
+                    OnAmmoAmountChanged?.Invoke(ammo.Type, weapon.AmmoClip);
                     OnItemUpdated?.Invoke(item.Key, weapon.AmmoClip);
                     return;
                 }
@@ -117,19 +129,8 @@ public class Inventory : MonoBehaviour
         {
             AmmoSO ammo = weapon.WeaponTemplate.AmmoBoxPrefab.AmmoTemplate;
             _inventory.Add(ammo, weapon.AmmoClip);
+            OnAmmoAmountChanged?.Invoke(ammo.Type, weapon.AmmoClip);
             OnItemAdded?.Invoke(ammo, weapon.AmmoClip);
-        }
-    }
-
-    private void SearchForAmmo()
-    {
-        foreach (KeyValuePair<ItemBase, int> item in _inventory)
-        {
-            if (item.Key.GetType() == typeof(AmmoSO))
-            {
-                AmmoSO ammo = (AmmoSO)item.Key;
-                OnAmmoAmountChanged?.Invoke(ammo.Type, item.Value);
-            }
         }
     }
 
@@ -148,10 +149,23 @@ public class Inventory : MonoBehaviour
         AddFromActive(_activeItem);
         _activeItem = null;
         OnActiveItemRemoved?.Invoke();
+    }
 
-        /*foreach (KeyValuePair<ItemBase, int> i in _inventory)
+    private void DecreaseAmmo(AmmoType ammoType)
+    {
+        foreach (KeyValuePair<ItemBase, int> item in _inventory)
         {
-            Debug.Log(i.Key.Name);
-        }*/
+            if (item.Key.GetType() == typeof(AmmoSO))
+            {
+                AmmoSO ammo = (AmmoSO)item.Key;
+                if (ammo.Type == ammoType)
+                {
+                    _inventory[item.Key]--;
+                    OnAmmoAmountChanged?.Invoke(ammoType, -1);
+                    OnItemUpdated?.Invoke(item.Key, -1);
+                    return;
+                }
+            }
+        }
     }
 }

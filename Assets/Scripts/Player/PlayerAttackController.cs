@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerAttackController : MonoBehaviour
 {
+    public static Action<int, int> OnWeaponEquipped;
+    public static Action OnWeaponRemoved;
+
     [SerializeField] private Transform _itemContainer;
     [field: SerializeField] public int PistolAmmoAmount { get; private set; }
     [field: SerializeField] public int RifleAmmoAmount { get; private set; }
@@ -12,6 +16,7 @@ public class PlayerAttackController : MonoBehaviour
     public bool ItemIsEquipped { get; private set; }
 
     private RangeWeaponPhysicalItem _equippedWeapon;
+    private AmmoType _currentAmmoType;
     private Vector3 _holdPosition;
     private Vector3 _aimPosition;
 
@@ -55,13 +60,13 @@ public class PlayerAttackController : MonoBehaviour
         switch (ammoType)
         {
             case AmmoType.Pistol:
-                PistolAmmoAmount = amount;
+                PistolAmmoAmount += amount;
                 break;
             case AmmoType.Rifle:
-                RifleAmmoAmount = amount;
+                RifleAmmoAmount += amount;
                 break;
             case AmmoType.Shotgun:
-                ShotgunAmmoAmount = amount;
+                ShotgunAmmoAmount += amount;
                 break;
         }
     }
@@ -81,6 +86,25 @@ public class PlayerAttackController : MonoBehaviour
             item.GetComponent<BoxCollider>().enabled = false;
             ItemIsEquipped = true;
             _equippedWeapon = item.GetComponent<RangeWeaponPhysicalItem>();
+            _currentAmmoType = weaponSO.WeaponAmmoType;
+
+            int currentAmmo = 0;
+            switch (_currentAmmoType)
+            {
+                case AmmoType.Pistol:
+                    currentAmmo = PistolAmmoAmount;
+                    break;
+
+                case AmmoType.Rifle:
+                    currentAmmo = RifleAmmoAmount;
+                    break;
+
+                case AmmoType.Shotgun:
+                    currentAmmo = ShotgunAmmoAmount;
+                    break;
+            }
+
+            OnWeaponEquipped?.Invoke(_equippedWeapon.AmmoClip, currentAmmo);
 
             _holdPosition = weaponSO.HoldOffset;
             _aimPosition = weaponSO.AimPosition;
@@ -90,6 +114,7 @@ public class PlayerAttackController : MonoBehaviour
     private void UnequipItem()
     {
         Destroy(_itemContainer.GetComponentInChildren<PhysicalItemBase>().gameObject);
+        OnWeaponRemoved?.Invoke();
         ItemIsEquipped = false;
         _equippedWeapon = null;
     }
