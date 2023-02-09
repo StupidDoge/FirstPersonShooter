@@ -20,7 +20,7 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
     public float FireRate => _fireRate;
 
     public bool CanShoot { get; private set; } = true;
-    public int CurrentAmmo { get; set; }
+    public int CurrentAmmo;
 
     private void Awake()
     {
@@ -36,12 +36,12 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
     {
         _ammoClip = _rangeWeaponSO.AmmoClip;
         _fireRate = _rangeWeaponSO.FireRate;
-        CurrentAmmo = _ammoClip;
     }
 
     public override void Interact(Interactor interactor)
     {
         OnItemEquipped?.Invoke(_rangeWeaponSO, baseAmount, gameObject);
+        OnItemEquipped?.Invoke(_rangeWeaponSO.AmmoBoxPrefab.AmmoTemplate, CurrentAmmo, gameObject);
     }
 
     public async void Shoot()

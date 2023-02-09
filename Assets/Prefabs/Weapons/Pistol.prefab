@@ -485,6 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rangeWeaponSO: {fileID: 11400000, guid: 1fad24e4a6166a145bcb7d065999f192, type: 2}
+  CurrentAmmo: 8
 --- !u!1 &6305072133024177643
 GameObject:
   m_ObjectHideFlags: 0

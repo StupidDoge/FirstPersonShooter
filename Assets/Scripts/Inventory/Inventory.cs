@@ -47,7 +47,7 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        if (_inventory.ContainsKey(item))
+        if (_inventory.ContainsKey(item) || _activeItem == item)
         {
             if (item.Stackable)
             {
@@ -65,11 +65,10 @@ public class Inventory : MonoBehaviour
                 if (physicalItem.TryGetComponent(out RangeWeaponPhysicalItem weapon))
                 {
                     Destroy(physicalItem);
-                    AddAmmo(weapon);
                 }
             }
         }
-        else if (!_inventory.ContainsKey(item))
+        else if (!_inventory.ContainsKey(item) && ActiveItem != item)
         {
             _inventory.Add(item, amount);
             OnItemAdded?.Invoke(item, amount);
@@ -103,34 +102,6 @@ public class Inventory : MonoBehaviour
         {
             AmmoSO ammo = (AmmoSO)item;
             OnAmmoAmountChanged(ammo.Type, -amount);
-        }
-    }
-
-    private void AddAmmo(RangeWeaponPhysicalItem weapon)
-    {
-        bool ammoFound = false;
-        foreach(KeyValuePair<ItemBase, int> item in _inventory)
-        {
-            if (item.Key.GetType() == typeof(AmmoSO))
-            {
-                AmmoSO ammo = (AmmoSO)item.Key;
-                if (ammo.Type == weapon.WeaponTemplate.WeaponAmmoType)
-                {
-                    ammoFound = true;
-                    _inventory[item.Key] += weapon.AmmoClip;
-                    OnAmmoAmountChanged?.Invoke(ammo.Type, weapon.AmmoClip);
-                    OnItemUpdated?.Invoke(item.Key, weapon.AmmoClip);
-                    return;
-                }
-            }
-        }
-
-        if (!ammoFound)
-        {
-            AmmoSO ammo = weapon.WeaponTemplate.AmmoBoxPrefab.AmmoTemplate;
-            _inventory.Add(ammo, weapon.AmmoClip);
-            OnAmmoAmountChanged?.Invoke(ammo.Type, weapon.AmmoClip);
-            OnItemAdded?.Invoke(ammo, weapon.AmmoClip);
         }
     }
 
