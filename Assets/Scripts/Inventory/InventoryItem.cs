@@ -9,19 +9,21 @@ public class InventoryItem : MonoBehaviour
 
     public int CellNumber { get; set; }
     public bool IsEquipped { get; set; }
-    public ItemBase ItemSO { get; private set; }
+    [field: SerializeField] public PhysicalItemBase Item { get; private set; }
+    [field: SerializeField] public ItemBase ItemSO { get; private set; }
 
     [SerializeField] private Image _image;
     [SerializeField] private TextMeshProUGUI _amountText;
 
     private int _amount;
 
-    public void SetInfo(Sprite sprite, int amount, int cellNumber, ItemBase itemSO)
+    public void SetInfo(Sprite sprite, int amount, int cellNumber, PhysicalItemBase item, ItemBase itemSO)
     {
         _image.sprite = sprite;
         _amount = amount;
         _amountText.text = amount.ToString();
         CellNumber = cellNumber;
+        Item = item;
         ItemSO = itemSO;
     }
 
@@ -29,12 +31,6 @@ public class InventoryItem : MonoBehaviour
     {
         _amountText.text = (_amount + newCount).ToString();
         _amount += newCount;
-    }
-
-    public void DecreaseCount()
-    {
-        _amount--;
-        _amountText.text = _amount.ToString();
     }
 
     public void OpenContextMenu()

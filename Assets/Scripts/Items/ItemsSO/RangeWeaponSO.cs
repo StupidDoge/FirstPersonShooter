@@ -7,11 +7,13 @@ public class RangeWeaponSO : WeaponSO
 {
     [SerializeField] private int _ammoClip;
     [SerializeField] private float _fireRate;
+    [SerializeField] private float _reloadTime;
     [SerializeField] private AmmoType _ammoType;
     [SerializeField] private AmmoBoxPhysicalItem _ammoBoxPrefab;
 
     public int AmmoClip => _ammoClip;
     public float FireRate => _fireRate;
+    public float ReloadTime => _reloadTime;
     public AmmoType WeaponAmmoType => _ammoType;
     public AmmoBoxPhysicalItem AmmoBoxPrefab => _ammoBoxPrefab;
 }

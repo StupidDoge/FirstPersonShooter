@@ -23,7 +23,8 @@ MonoBehaviour:
   _holdOffset: {x: -0.04, y: 0.05, z: -0.06}
   _aimPosition: {x: -0.18, y: 0.05, z: -0.06}
   _ammoClip: 8
-  _fireRate: 1
+  _fireRate: 0.5
+  _reloadTime: 1.5
   _ammoType: 0
   _ammoBoxPrefab: {fileID: 5061844070273955230, guid: b68d2b0eb117b064784276c22f412bd2,
     type: 3}

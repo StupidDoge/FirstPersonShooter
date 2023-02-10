@@ -80,7 +80,7 @@ public class InventoryPanel : MonoBehaviour
         SearchFirstEmptyCell();
         GameObject newObject = Instantiate(_inventoryItem, _emptyCells[_firstEmptyCell].transform);
         InventoryItem inventoryItem = newObject.GetComponent<InventoryItem>();
-        inventoryItem.SetInfo(item.ItemSprite, amount, _firstEmptyCell, item);
+        inventoryItem.SetInfo(item.ItemSprite, amount, _firstEmptyCell, item.ItemPrefab.GetComponent<PhysicalItemBase>(), item);
         _emptyCells[_firstEmptyCell].Item = inventoryItem;
         _firstEmptyCell++;
     }

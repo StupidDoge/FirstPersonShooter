@@ -13,6 +13,10 @@ public class PlayerAttackController : MonoBehaviour
     [field: SerializeField] public int RifleAmmoAmount { get; private set; }
     [field: SerializeField] public int ShotgunAmmoAmount { get; private set; }
 
+    [field: SerializeField] public int CurrentPistolAmmoAmount { get; private set; }
+    [field: SerializeField] public int CurrentRifleAmmoAmount { get; private set; }
+    [field: SerializeField] public int CurrentShotgunAmmoAmount { get; private set; }
+
     public bool ItemIsEquipped { get; private set; }
 
     private RangeWeaponPhysicalItem _equippedWeapon;
@@ -32,6 +36,7 @@ public class PlayerAttackController : MonoBehaviour
         Inventory.OnAmmoAmountChanged += ChangeAmmoAmount;
         Inventory.OnActiveItemSet += EquipItem;
         Inventory.OnActiveItemRemoved += UnequipItem;
+        PlayerInputHolder.OnReloadButtonPressed += StartReloading;
     }
 
     private void OnDisable()
@@ -39,6 +44,13 @@ public class PlayerAttackController : MonoBehaviour
         Inventory.OnAmmoAmountChanged -= ChangeAmmoAmount;
         Inventory.OnActiveItemSet -= EquipItem;
         Inventory.OnActiveItemRemoved -= UnequipItem;
+        PlayerInputHolder.OnReloadButtonPressed -= StartReloading;
+    }
+
+    private async void StartReloading()
+    {
+        if (_equippedWeapon != null)
+            await _equippedWeapon.Reload();
     }
 
     private void Update()
@@ -47,7 +59,7 @@ public class PlayerAttackController : MonoBehaviour
         {
             if (_playerInputHolder.leftMouseClick)
             {
-                if (_equippedWeapon.CanShoot)
+                if (_equippedWeapon.CanShoot && !_equippedWeapon.IsReloading)
                     _equippedWeapon.Shoot();
             }
 

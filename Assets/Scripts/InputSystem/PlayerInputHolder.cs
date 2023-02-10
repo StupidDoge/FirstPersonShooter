@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerInputHolder : MonoBehaviour
 {
 	public static Action OnInventoryUsed;
+	public static Action OnReloadButtonPressed;
 	public static Action OnMouseLeftButtonClicked;
 
 	[Header("Character Input Values")]
@@ -16,6 +17,7 @@ public class PlayerInputHolder : MonoBehaviour
 	public bool inventory;
 	public bool leftMouseClick;
 	public bool rightMouseClick;
+	public bool reload;
 
 	[Header("Movement Settings")]
 	public bool analogMovement;
@@ -77,6 +79,20 @@ public class PlayerInputHolder : MonoBehaviour
 		{
 			inventory = false;
 			OnInventoryUsed?.Invoke();
+		}
+	}
+
+	public void OnReload(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+			reload = true;
+		}
+
+		if (context.canceled)
+		{
+			reload = false;
+			OnReloadButtonPressed?.Invoke();
 		}
 	}
 
