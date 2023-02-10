@@ -6,7 +6,7 @@ using System;
 
 public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public static Action<InventoryItem, int> OnItemDropped;
+    public static Action<ItemBase, int> OnItemDropped;
     public static Action<InventoryItem> OnItemEquipped;
 
     [SerializeField] private TextMeshProUGUI _itemName;
@@ -55,7 +55,7 @@ public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void DropItem()
     {
-        OnItemDropped?.Invoke(_item, _amount);
+        OnItemDropped?.Invoke(_itemSO, _amount);
         gameObject.SetActive(false);
     }
 

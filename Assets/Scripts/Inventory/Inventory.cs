@@ -24,7 +24,7 @@ public class Inventory : MonoBehaviour
     private void OnEnable()
     {
         PhysicalItemBase.OnItemEquipped += Add;
-        ItemContextMenu.OnItemDropped += Delete;
+        ItemContextMenu.OnItemDropped += Remove;
         ItemContextMenu.OnItemEquipped += SetActiveItem;
         InventoryCell.OnItemUnequipped += RemoveActiveItem;
         RangeWeaponPhysicalItem.OnWeaponShot += DecreaseAmmo;
@@ -33,7 +33,7 @@ public class Inventory : MonoBehaviour
     private void OnDisable()
     {
         PhysicalItemBase.OnItemEquipped -= Add;
-        ItemContextMenu.OnItemDropped -= Delete;
+        ItemContextMenu.OnItemDropped -= Remove;
         ItemContextMenu.OnItemEquipped -= SetActiveItem;
         InventoryCell.OnItemUnequipped -= RemoveActiveItem;
         RangeWeaponPhysicalItem.OnWeaponShot -= DecreaseAmmo;
@@ -68,7 +68,7 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-        else if (!_inventory.ContainsKey(item) && ActiveItem != item)
+        else if (!_inventory.ContainsKey(item) && ActiveItem != item && amount != 0)
         {
             _inventory.Add(item, amount);
             OnItemAdded?.Invoke(item, amount, physicalItem);
@@ -93,14 +93,14 @@ public class Inventory : MonoBehaviour
         OnItemFromActiveSlotAdded?.Invoke();
     }
 
-    private void Delete(InventoryItem item, int amount)
+    private void Remove(ItemBase item, int amount)
     {
-        _inventory.Remove(item.ItemSO);
-        OnItemRemoved?.Invoke(item.ItemSO);
+        _inventory.Remove(item);
+        OnItemRemoved?.Invoke(item);
 
-        if (item.ItemSO.GetType() == typeof(AmmoSO))
+        if (item.GetType() == typeof(AmmoSO))
         {
-            AmmoSO ammo = (AmmoSO)item.ItemSO;
+            AmmoSO ammo = (AmmoSO)item;
             OnAmmoAmountChanged?.Invoke(ammo.Type, -amount);
         }
     }
@@ -112,7 +112,7 @@ public class Inventory : MonoBehaviour
 
         _activeItem = item.ItemSO;
         OnActiveItemSet?.Invoke(item.ItemSO, item);
-        Delete(item, 1);
+        Remove(item.ItemSO, 1);
     }
 
     private void RemoveActiveItem()
@@ -134,6 +134,12 @@ public class Inventory : MonoBehaviour
                     _inventory[item.Key]--;
                     OnAmmoAmountChanged?.Invoke(ammoType, -1);
                     OnItemUpdated?.Invoke(item.Key, -1);
+
+                    if (_inventory[item.Key] == 0)
+                    {
+                        Remove(item.Key, 0);
+                    }
+
                     return;
                 }
             }

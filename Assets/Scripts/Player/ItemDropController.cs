@@ -16,9 +16,9 @@ public class ItemDropController : MonoBehaviour
         ItemContextMenu.OnItemDropped -= SpawnItem;
     }
 
-    private void SpawnItem(InventoryItem item, int amount)
+    private void SpawnItem(ItemBase itemSO, int amount)
     {
-        GameObject newItem = Instantiate(item.ItemSO.ItemPrefab);
+        GameObject newItem = Instantiate(itemSO.ItemPrefab);
         newItem.transform.position = _dropPoint.position;
 
         if (newItem.TryGetComponent(out AmmoBoxPhysicalItem ammoBox))
