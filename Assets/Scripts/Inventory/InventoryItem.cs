@@ -9,7 +9,7 @@ public class InventoryItem : MonoBehaviour
 
     public int CellNumber { get; set; }
     public bool IsEquipped { get; set; }
-    [field: SerializeField] public PhysicalItemBase Item { get; private set; }
+    public int WeaponCurrentAmmoAmount { get; private set; }
     [field: SerializeField] public ItemBase ItemSO { get; private set; }
 
     [SerializeField] private Image _image;
@@ -23,7 +23,11 @@ public class InventoryItem : MonoBehaviour
         _amount = amount;
         _amountText.text = amount.ToString();
         CellNumber = cellNumber;
-        Item = item;
+        if (item.GetType() == typeof(RangeWeaponPhysicalItem))
+        {
+            RangeWeaponPhysicalItem tempItem = (RangeWeaponPhysicalItem)item;
+            WeaponCurrentAmmoAmount = tempItem.CurrentAmmo;
+        }
         ItemSO = itemSO;
     }
 

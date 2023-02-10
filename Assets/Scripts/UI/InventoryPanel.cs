@@ -75,12 +75,12 @@ public class InventoryPanel : MonoBehaviour
         }
     }
 
-    private void AddItem(ItemBase item, int amount)
+    private void AddItem(ItemBase item, int amount, GameObject physicalItem)
     {
         SearchFirstEmptyCell();
         GameObject newObject = Instantiate(_inventoryItem, _emptyCells[_firstEmptyCell].transform);
         InventoryItem inventoryItem = newObject.GetComponent<InventoryItem>();
-        inventoryItem.SetInfo(item.ItemSprite, amount, _firstEmptyCell, item.ItemPrefab.GetComponent<PhysicalItemBase>(), item);
+        inventoryItem.SetInfo(item.ItemSprite, amount, _firstEmptyCell, physicalItem.GetComponent<PhysicalItemBase>(), item);
         _emptyCells[_firstEmptyCell].Item = inventoryItem;
         _firstEmptyCell++;
     }
@@ -144,7 +144,7 @@ public class InventoryPanel : MonoBehaviour
             CloseContextMenu();
     }
 
-    private void MoveItemToActiveCell(ItemBase itemSO)
+    private void MoveItemToActiveCell(ItemBase itemSO, InventoryItem item)
     {
         if (_activeItemCell.childCount != 0)
             return;
@@ -155,9 +155,9 @@ public class InventoryPanel : MonoBehaviour
             {
                 if (cell.GetComponentInChildren<InventoryItem>().ItemSO == itemSO)
                 {
-                    InventoryItem item = cell.GetComponentInChildren<InventoryItem>();
-                    item.transform.SetParent(_activeItemCell);
-                    item.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    InventoryItem newItem = cell.GetComponentInChildren<InventoryItem>();
+                    newItem.transform.SetParent(_activeItemCell);
+                    newItem.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
                 }
             }
         }

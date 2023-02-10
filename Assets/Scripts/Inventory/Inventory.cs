@@ -5,10 +5,10 @@ using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
-    public static Action<ItemBase, int> OnItemAdded;
+    public static Action<ItemBase, int, GameObject> OnItemAdded;
     public static Action<ItemBase, int> OnItemUpdated;
     public static Action<ItemBase> OnItemRemoved;
-    public static Action<ItemBase> OnActiveItemSet;
+    public static Action<ItemBase, InventoryItem> OnActiveItemSet;
     public static Action OnActiveItemRemoved;
     public static Action<AmmoType, int> OnAmmoAmountChanged;
     public static Action OnItemFromActiveSlotAdded;
@@ -71,7 +71,7 @@ public class Inventory : MonoBehaviour
         else if (!_inventory.ContainsKey(item) && ActiveItem != item)
         {
             _inventory.Add(item, amount);
-            OnItemAdded?.Invoke(item, amount);
+            OnItemAdded?.Invoke(item, amount, physicalItem);
             if (item.GetType() == typeof(AmmoSO))
             {
                 AmmoSO ammoSO = (AmmoSO)item;
@@ -111,7 +111,7 @@ public class Inventory : MonoBehaviour
             return;
 
         _activeItem = item.ItemSO;
-        OnActiveItemSet?.Invoke(item.ItemSO);
+        OnActiveItemSet?.Invoke(item.ItemSO, item);
         Delete(item, 1);
     }
 

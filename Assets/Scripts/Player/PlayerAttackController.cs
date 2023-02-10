@@ -105,7 +105,7 @@ public class PlayerAttackController : MonoBehaviour
         }
     }
 
-    private void EquipItem(ItemBase itemSO)
+    private void EquipItem(ItemBase itemSO, InventoryItem inventoryItem)
     {
         if (ItemIsEquipped)
             return;
@@ -120,6 +120,7 @@ public class PlayerAttackController : MonoBehaviour
             item.GetComponent<BoxCollider>().enabled = false;
             ItemIsEquipped = true;
             _equippedWeapon = item.GetComponent<RangeWeaponPhysicalItem>();
+            _equippedWeapon.CurrentAmmo = inventoryItem.WeaponCurrentAmmoAmount;
             _currentAmmoType = weaponSO.WeaponAmmoType;
 
             switch (_currentAmmoType)
@@ -137,7 +138,7 @@ public class PlayerAttackController : MonoBehaviour
                     break;
             }
             _equippedWeapon.TotalAmmo = _currentWeaponTotalAmmo;
-            OnWeaponEquipped?.Invoke(_equippedWeapon.AmmoClip, _currentWeaponTotalAmmo);
+            OnWeaponEquipped?.Invoke(_equippedWeapon.CurrentAmmo, _currentWeaponTotalAmmo);
 
             _holdPosition = weaponSO.HoldOffset;
             _aimPosition = weaponSO.AimPosition;
