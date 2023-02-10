@@ -27,6 +27,6 @@ public class ActiveItemCell : MonoBehaviour, IDropHandler
         inventoryItem.CellNumber = Id;
         inventoryItem.IsEquipped = true;
         draggableItem.ParentAfterDrag = transform;
-        ItemContextMenu.OnItemEquipped?.Invoke(inventoryItem.ItemSO);
+        ItemContextMenu.OnItemEquipped?.Invoke(inventoryItem);
     }
 }

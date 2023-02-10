@@ -18,14 +18,16 @@ public class HUDController : MonoBehaviour
     {
         PlayerAttackController.OnWeaponEquipped += ShowAmmoPanel;
         PlayerAttackController.OnWeaponRemoved += HideAmmoPanel;
-        RangeWeaponPhysicalItem.OnAmmoDecreased += DecreaseAmmo;
+        PlayerAttackController.OnTotalAmmoAmountChanged += ChangeAmmoLeftAmount;
+        RangeWeaponPhysicalItem.OnCurrentAmmoAmountChanged += ChangeAmmoAmount;
     }
 
     private void OnDisable()
     {
         PlayerAttackController.OnWeaponEquipped -= ShowAmmoPanel;
         PlayerAttackController.OnWeaponRemoved -= HideAmmoPanel;
-        RangeWeaponPhysicalItem.OnAmmoDecreased -= DecreaseAmmo;
+        PlayerAttackController.OnTotalAmmoAmountChanged -= ChangeAmmoLeftAmount;
+        RangeWeaponPhysicalItem.OnCurrentAmmoAmountChanged -= ChangeAmmoAmount;
     }
 
     private void ShowAmmoPanel(int currentAmmo, int totalAmmo)
@@ -36,9 +38,16 @@ public class HUDController : MonoBehaviour
         _ammo.text = _currentAmmo.ToString() + _devider + _ammoLeft.ToString();
     }
 
-    private void DecreaseAmmo()
+    private void ChangeAmmoAmount(int currentAmmo, int totalAmmo)
     {
-        _currentAmmo--;
+        _currentAmmo = currentAmmo;
+        _ammoLeft = totalAmmo - currentAmmo;
+        _ammo.text = _currentAmmo.ToString() + _devider + _ammoLeft.ToString();
+    }
+
+    private void ChangeAmmoLeftAmount(int totalAmmo)
+    {
+        _ammoLeft = totalAmmo;
         _ammo.text = _currentAmmo.ToString() + _devider + _ammoLeft.ToString();
     }
 

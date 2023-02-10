@@ -6,8 +6,8 @@ using System;
 
 public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public static Action<ItemBase, int> OnItemDropped;
-    public static Action<ItemBase> OnItemEquipped;
+    public static Action<InventoryItem, int> OnItemDropped;
+    public static Action<InventoryItem> OnItemEquipped;
 
     [SerializeField] private TextMeshProUGUI _itemName;
     [SerializeField] private Button _useButton;
@@ -49,13 +49,13 @@ public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExit
             return;
 
         _item.IsEquipped = true;
-        OnItemEquipped?.Invoke(_itemSO);
+        OnItemEquipped?.Invoke(_item);
         gameObject.SetActive(false);
     }
 
     public void DropItem()
     {
-        OnItemDropped?.Invoke(_itemSO, _amount);
+        OnItemDropped?.Invoke(_item, _amount);
         gameObject.SetActive(false);
     }
 

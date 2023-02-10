@@ -93,25 +93,25 @@ public class Inventory : MonoBehaviour
         OnItemFromActiveSlotAdded?.Invoke();
     }
 
-    private void Delete(ItemBase item, int amount)
+    private void Delete(InventoryItem item, int amount)
     {
-        _inventory.Remove(item);
-        OnItemRemoved?.Invoke(item);
+        _inventory.Remove(item.ItemSO);
+        OnItemRemoved?.Invoke(item.ItemSO);
 
-        if (item.GetType() == typeof(AmmoSO))
+        if (item.ItemSO.GetType() == typeof(AmmoSO))
         {
-            AmmoSO ammo = (AmmoSO)item;
-            OnAmmoAmountChanged(ammo.Type, -amount);
+            AmmoSO ammo = (AmmoSO)item.ItemSO;
+            OnAmmoAmountChanged?.Invoke(ammo.Type, -amount);
         }
     }
 
-    private void SetActiveItem(ItemBase item)
+    private void SetActiveItem(InventoryItem item)
     {
         if (_activeItem != null)
             return;
 
-        _activeItem = item;
-        OnActiveItemSet?.Invoke(item);
+        _activeItem = item.ItemSO;
+        OnActiveItemSet?.Invoke(item.ItemSO);
         Delete(item, 1);
     }
 

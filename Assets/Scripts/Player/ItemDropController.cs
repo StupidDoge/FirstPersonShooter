@@ -16,14 +16,19 @@ public class ItemDropController : MonoBehaviour
         ItemContextMenu.OnItemDropped -= SpawnItem;
     }
 
-    private void SpawnItem(ItemBase itemSO, int amount)
+    private void SpawnItem(InventoryItem item, int amount)
     {
-        GameObject item = Instantiate(itemSO.ItemPrefab);
-        item.transform.position = _dropPoint.position;
+        GameObject newItem = Instantiate(item.ItemSO.ItemPrefab);
+        newItem.transform.position = _dropPoint.position;
 
-        if (item.TryGetComponent(out AmmoBoxPhysicalItem ammoBox))
+        if (newItem.TryGetComponent(out AmmoBoxPhysicalItem ammoBox))
         {
             ammoBox.SetAmount(amount);
+        }
+
+        if (newItem.TryGetComponent(out RangeWeaponPhysicalItem rangeWeapon))
+        {
+            rangeWeapon.CurrentAmmo = 0;
         }
     }
 }

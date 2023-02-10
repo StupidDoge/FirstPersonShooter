@@ -6,6 +6,7 @@ using System;
 public class PlayerAttackController : MonoBehaviour
 {
     public static Action<int, int> OnWeaponEquipped;
+    public static Action<int> OnTotalAmmoAmountChanged;
     public static Action OnWeaponRemoved;
 
     [SerializeField] private Transform _itemContainer;
@@ -23,6 +24,8 @@ public class PlayerAttackController : MonoBehaviour
     private AmmoType _currentAmmoType;
     private Vector3 _holdPosition;
     private Vector3 _aimPosition;
+
+    private int _currentWeaponTotalAmmo;
 
     private PlayerInputHolder _playerInputHolder;
 
@@ -59,7 +62,7 @@ public class PlayerAttackController : MonoBehaviour
         {
             if (_playerInputHolder.leftMouseClick)
             {
-                if (_equippedWeapon.CanShoot && !_equippedWeapon.IsReloading)
+                if (_equippedWeapon.CanShoot && !_equippedWeapon.IsReloading && _equippedWeapon.TotalAmmo != 0)
                     _equippedWeapon.Shoot();
             }
 
@@ -81,6 +84,25 @@ public class PlayerAttackController : MonoBehaviour
                 ShotgunAmmoAmount += amount;
                 break;
         }
+
+        switch (_currentAmmoType)
+        {
+            case AmmoType.Pistol:
+                _currentWeaponTotalAmmo = PistolAmmoAmount;
+                break;
+            case AmmoType.Rifle:
+                _currentWeaponTotalAmmo = RifleAmmoAmount;
+                break;
+            case AmmoType.Shotgun:
+                _currentWeaponTotalAmmo = ShotgunAmmoAmount;
+                break;
+        }
+
+        if (_equippedWeapon != null)
+        {
+            _equippedWeapon.TotalAmmo = _currentWeaponTotalAmmo;
+            OnTotalAmmoAmountChanged?.Invoke(_currentWeaponTotalAmmo - _equippedWeapon.CurrentAmmo);
+        }
     }
 
     private void EquipItem(ItemBase itemSO)
@@ -100,23 +122,22 @@ public class PlayerAttackController : MonoBehaviour
             _equippedWeapon = item.GetComponent<RangeWeaponPhysicalItem>();
             _currentAmmoType = weaponSO.WeaponAmmoType;
 
-            int currentAmmo = 0;
             switch (_currentAmmoType)
             {
                 case AmmoType.Pistol:
-                    currentAmmo = PistolAmmoAmount;
+                    _currentWeaponTotalAmmo = PistolAmmoAmount;
                     break;
 
                 case AmmoType.Rifle:
-                    currentAmmo = RifleAmmoAmount;
+                    _currentWeaponTotalAmmo = RifleAmmoAmount;
                     break;
 
                 case AmmoType.Shotgun:
-                    currentAmmo = ShotgunAmmoAmount;
+                    _currentWeaponTotalAmmo = ShotgunAmmoAmount;
                     break;
             }
-
-            OnWeaponEquipped?.Invoke(_equippedWeapon.AmmoClip, currentAmmo);
+            _equippedWeapon.TotalAmmo = _currentWeaponTotalAmmo;
+            OnWeaponEquipped?.Invoke(_equippedWeapon.AmmoClip, _currentWeaponTotalAmmo);
 
             _holdPosition = weaponSO.HoldOffset;
             _aimPosition = weaponSO.AimPosition;

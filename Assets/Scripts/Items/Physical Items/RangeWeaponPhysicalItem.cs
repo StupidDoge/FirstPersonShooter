@@ -7,7 +7,7 @@ using UnityEngine;
 public class RangeWeaponPhysicalItem : PhysicalItemBase
 {
     public static Action<AmmoType> OnWeaponShot;
-    public static Action OnAmmoDecreased;
+    public static Action<int, int> OnCurrentAmmoAmountChanged;
 
     [SerializeField] private RangeWeaponSO _rangeWeaponSO;
 
@@ -22,6 +22,7 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
 
     public bool CanShoot { get; private set; } = true;
     public bool IsReloading { get; private set; } = false;
+    [field: SerializeField] public int TotalAmmo { get; set; }
     public int CurrentAmmo;
 
     private void Awake()
@@ -55,13 +56,13 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
         }
 
         CanShoot = false;
-        CurrentAmmo--;
         int milliseconds = (int)(_fireRate * 1000);
 
         Ray ray = _mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = transform.position;
+        CurrentAmmo--;
         OnWeaponShot?.Invoke(WeaponTemplate.WeaponAmmoType);
-        OnAmmoDecreased?.Invoke();
+        OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
@@ -77,8 +78,25 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
     {
         IsReloading = true;
         int milliseconds = (int)(_reloadTime * 1000);
+        int ammoToReload;
+        if (TotalAmmo > AmmoClip)
+        {
+            ammoToReload = AmmoClip;
+        } 
+        else
+        {
+            ammoToReload = TotalAmmo;
+        }
+
         await Task.Delay(milliseconds);
-        CurrentAmmo = AmmoClip;
+
+        if (TotalAmmo == 0)
+            CurrentAmmo = 0;
+        else 
+            CurrentAmmo = ammoToReload;
+
+        OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
+
         IsReloading = false;
     }
 }
