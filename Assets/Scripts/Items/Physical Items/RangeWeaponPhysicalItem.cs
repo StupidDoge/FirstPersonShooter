@@ -20,9 +20,9 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
     public int AmmoClip => _ammoClip;
     public float FireRate => _fireRate;
 
-    public bool CanShoot { get; private set; } = true;
-    public bool IsReloading { get; private set; } = false;
-    [field: SerializeField] public int TotalAmmo { get; set; }
+    public bool CanShoot { get; protected set; } = true;
+    public bool IsReloading { get; protected set; } = false;
+    public int TotalAmmo { get; set; }
     public int CurrentAmmo;
 
     private void Awake()
@@ -48,7 +48,7 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
         OnItemEquipped?.Invoke(_rangeWeaponSO.AmmoBoxPrefab.AmmoTemplate, CurrentAmmo, gameObject);
     }
 
-    public async void Shoot()
+    public virtual async void Shoot()
     {
         if (CurrentAmmo == 0)
         {
@@ -74,7 +74,7 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
         CanShoot = true;
     }
 
-    public async Task Reload()
+    public virtual async Task Reload()
     {
         IsReloading = true;
         int milliseconds = (int)(_reloadTime * 1000);

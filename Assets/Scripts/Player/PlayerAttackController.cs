@@ -119,7 +119,10 @@ public class PlayerAttackController : MonoBehaviour
             item.GetComponent<Rigidbody>().isKinematic = true;
             item.GetComponent<BoxCollider>().enabled = false;
             ItemIsEquipped = true;
-            _equippedWeapon = item.GetComponent<RangeWeaponPhysicalItem>();
+
+            if (weaponSO.Type == RangeWeaponType.Classic)
+                _equippedWeapon = item.GetComponent<ClassicRangeWeaponPhysicalItem>();
+
             _equippedWeapon.CurrentAmmo = inventoryItem.WeaponCurrentAmmoAmount;
             _currentAmmoType = weaponSO.WeaponAmmoType;
 

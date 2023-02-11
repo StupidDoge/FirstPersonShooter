@@ -23,9 +23,8 @@ public class InventoryItem : MonoBehaviour
         _amount = amount;
         _amountText.text = amount.ToString();
         CellNumber = cellNumber;
-        if (item.GetType() == typeof(RangeWeaponPhysicalItem))
+        if (item is RangeWeaponPhysicalItem tempItem)
         {
-            RangeWeaponPhysicalItem tempItem = (RangeWeaponPhysicalItem)item;
             WeaponCurrentAmmoAmount = tempItem.CurrentAmmo;
         }
         ItemSO = itemSO;

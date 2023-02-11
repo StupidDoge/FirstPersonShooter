@@ -25,6 +25,7 @@ MonoBehaviour:
   _ammoClip: 8
   _fireRate: 0.5
   _reloadTime: 1.5
+  _type: 1
   _ammoType: 0
   _ammoBoxPrefab: {fileID: 5061844070273955230, guid: b68d2b0eb117b064784276c22f412bd2,
     type: 3}
