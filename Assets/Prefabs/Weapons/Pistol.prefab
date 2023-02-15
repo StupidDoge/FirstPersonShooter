@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 6723054537114009293}
   - component: {fileID: 3005772408887683550}
   - component: {fileID: 7057405551830784135}
-  - component: {fileID: 7015204493541672817}
+  - component: {fileID: 7961985889850732398}
   m_Layer: 7
   m_Name: Pistol
   m_TagString: Untagged
@@ -472,7 +472,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.05, y: 0.18, z: 0.25}
   m_Center: {x: 0, y: -0.01, z: 0.02}
---- !u!114 &7015204493541672817
+--- !u!114 &7961985889850732398
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

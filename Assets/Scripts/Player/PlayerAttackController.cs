@@ -1,14 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class PlayerAttackController : MonoBehaviour
 {
-    public static Action<int, int> OnWeaponEquipped;
-    public static Action<int> OnTotalAmmoAmountChanged;
-    public static Action OnWeaponRemoved;
-
     [SerializeField] private Transform _itemContainer;
     [field: SerializeField] public int PistolAmmoAmount { get; private set; }
     [field: SerializeField] public int RifleAmmoAmount { get; private set; }
@@ -20,12 +13,7 @@ public class PlayerAttackController : MonoBehaviour
 
     public bool ItemIsEquipped { get; private set; }
 
-    private RangeWeaponPhysicalItem _equippedWeapon;
-    private AmmoType _currentAmmoType;
-    private Vector3 _holdPosition;
-    private Vector3 _aimPosition;
-
-    private int _currentWeaponTotalAmmo;
+    private PhysicalWeaponItem _equippedWeapon;
 
     private PlayerInputHolder _playerInputHolder;
 
@@ -36,24 +24,30 @@ public class PlayerAttackController : MonoBehaviour
 
     private void OnEnable()
     {
-        Inventory.OnAmmoAmountChanged += ChangeAmmoAmount;
         Inventory.OnActiveItemSet += EquipItem;
         Inventory.OnActiveItemRemoved += UnequipItem;
         PlayerInputHolder.OnReloadButtonPressed += StartReloading;
+        PlayerInputHolder.OnMouseRightButtonHold += Aim;
     }
 
     private void OnDisable()
     {
-        Inventory.OnAmmoAmountChanged -= ChangeAmmoAmount;
         Inventory.OnActiveItemSet -= EquipItem;
         Inventory.OnActiveItemRemoved -= UnequipItem;
         PlayerInputHolder.OnReloadButtonPressed -= StartReloading;
+        PlayerInputHolder.OnMouseRightButtonHold -= Aim;
     }
 
-    private async void StartReloading()
+    private void Aim(bool aimInput)
     {
-        if (_equippedWeapon != null)
-            await _equippedWeapon.Reload();
+        if (_equippedWeapon.TryGetComponent(out IAimable aimable))
+            aimable.Aim(aimInput);
+    }
+
+    private void StartReloading()
+    {
+        if (_equippedWeapon.TryGetComponent(out IReloadable reloadable))
+            StartCoroutine(reloadable.Reload());
     }
 
     private void Update()
@@ -62,46 +56,8 @@ public class PlayerAttackController : MonoBehaviour
         {
             if (_playerInputHolder.leftMouseClick)
             {
-                if (_equippedWeapon.CanShoot && !_equippedWeapon.IsReloading && _equippedWeapon.TotalAmmo != 0)
-                    _equippedWeapon.Shoot();
+                _equippedWeapon.Attack();
             }
-
-            Aim();
-        }
-    }
-
-    private void ChangeAmmoAmount(AmmoType ammoType, int amount)
-    {
-        switch (ammoType)
-        {
-            case AmmoType.Pistol:
-                PistolAmmoAmount += amount;
-                break;
-            case AmmoType.Rifle:
-                RifleAmmoAmount += amount;
-                break;
-            case AmmoType.Shotgun:
-                ShotgunAmmoAmount += amount;
-                break;
-        }
-
-        switch (_currentAmmoType)
-        {
-            case AmmoType.Pistol:
-                _currentWeaponTotalAmmo = PistolAmmoAmount;
-                break;
-            case AmmoType.Rifle:
-                _currentWeaponTotalAmmo = RifleAmmoAmount;
-                break;
-            case AmmoType.Shotgun:
-                _currentWeaponTotalAmmo = ShotgunAmmoAmount;
-                break;
-        }
-
-        if (_equippedWeapon != null)
-        {
-            _equippedWeapon.TotalAmmo = _currentWeaponTotalAmmo;
-            OnTotalAmmoAmountChanged?.Invoke(_currentWeaponTotalAmmo - _equippedWeapon.CurrentAmmo);
         }
     }
 
@@ -110,57 +66,17 @@ public class PlayerAttackController : MonoBehaviour
         if (ItemIsEquipped)
             return;
 
-        if (itemSO.GetType() == typeof(RangeWeaponSO))
-        {
-            RangeWeaponSO weaponSO = (RangeWeaponSO)itemSO;
-            GameObject item = Instantiate(weaponSO.ItemPrefab, _itemContainer);
-            item.transform.localPosition = weaponSO.HoldOffset;
-            item.transform.localRotation = Quaternion.identity;
-            item.GetComponent<Rigidbody>().isKinematic = true;
-            item.GetComponent<BoxCollider>().enabled = false;
-            ItemIsEquipped = true;
-
-            if (weaponSO.Type == RangeWeaponType.Classic)
-                _equippedWeapon = item.GetComponent<ClassicRangeWeaponPhysicalItem>();
-
-            _equippedWeapon.CurrentAmmo = inventoryItem.WeaponCurrentAmmoAmount;
-            _currentAmmoType = weaponSO.WeaponAmmoType;
-
-            switch (_currentAmmoType)
-            {
-                case AmmoType.Pistol:
-                    _currentWeaponTotalAmmo = PistolAmmoAmount;
-                    break;
-
-                case AmmoType.Rifle:
-                    _currentWeaponTotalAmmo = RifleAmmoAmount;
-                    break;
-
-                case AmmoType.Shotgun:
-                    _currentWeaponTotalAmmo = ShotgunAmmoAmount;
-                    break;
-            }
-            _equippedWeapon.TotalAmmo = _currentWeaponTotalAmmo;
-            OnWeaponEquipped?.Invoke(_equippedWeapon.CurrentAmmo, _currentWeaponTotalAmmo);
-
-            _holdPosition = weaponSO.HoldOffset;
-            _aimPosition = weaponSO.AimPosition;
-        }
+        GameObject item = Instantiate(itemSO.ItemPrefab, _itemContainer);
+        var newWeapon = item.GetComponent<PhysicalWeaponItem>();
+        _equippedWeapon = newWeapon;
+        _equippedWeapon.Equip();
     }
 
     private void UnequipItem()
     {
+        _equippedWeapon.Unequip();
         Destroy(_itemContainer.GetComponentInChildren<PhysicalItemBase>().gameObject);
-        OnWeaponRemoved?.Invoke();
         ItemIsEquipped = false;
         _equippedWeapon = null;
-    }
-
-    private void Aim()
-    {
-        if (_playerInputHolder.rightMouseClick)
-            _equippedWeapon.transform.localPosition = _aimPosition;
-        else
-            _equippedWeapon.transform.localPosition = _holdPosition;
     }
 }

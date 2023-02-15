@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
@@ -28,6 +27,7 @@ public class Inventory : MonoBehaviour
         ItemContextMenu.OnItemEquipped += SetActiveItem;
         InventoryCell.OnItemUnequipped += RemoveActiveItem;
         RangeWeaponPhysicalItem.OnWeaponShot += DecreaseAmmo;
+        RangeWeaponPhysicalItem.OnRangeWeaponEquipped += SetAmmo;
     }
 
     private void OnDisable()
@@ -37,6 +37,7 @@ public class Inventory : MonoBehaviour
         ItemContextMenu.OnItemEquipped -= SetActiveItem;
         InventoryCell.OnItemUnequipped -= RemoveActiveItem;
         RangeWeaponPhysicalItem.OnWeaponShot -= DecreaseAmmo;
+        RangeWeaponPhysicalItem.OnRangeWeaponEquipped -= SetAmmo;
     }
 
     private void Add(ItemBase item, int amount, GameObject physicalItem)
@@ -144,5 +145,23 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
+    }
+
+    private int SetAmmo(AmmoType ammoType)
+    {
+        int currentAmmo = 0;
+        foreach (KeyValuePair<ItemBase, int> item in _inventory)
+        {
+            if (item.Key.GetType() == typeof(AmmoSO))
+            {
+                AmmoSO ammo = (AmmoSO)item.Key;
+                if (ammo.Type == ammoType)
+                {
+                    currentAmmo = item.Value;
+                }
+            }
+        }
+
+        return currentAmmo;
     }
 }

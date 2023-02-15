@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
-public class RangeWeaponPhysicalItem : PhysicalItemBase
+public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IAimable, IReloadable
 {
+    public static Action<int, int> OnWeaponEquipped;
+    public static Action OnWeaponUnequipped;
     public static Action<AmmoType> OnWeaponShot;
     public static Action<int, int> OnCurrentAmmoAmountChanged;
+    public static Func<AmmoType, int> OnRangeWeaponEquipped;
 
     [SerializeField] private RangeWeaponSO _rangeWeaponSO;
 
@@ -19,10 +20,11 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
     public RangeWeaponSO WeaponTemplate => _rangeWeaponSO;
     public int AmmoClip => _ammoClip;
     public float FireRate => _fireRate;
+    public Camera MainCamera => _mainCamera;
 
     public bool CanShoot { get; protected set; } = true;
     public bool IsReloading { get; protected set; } = false;
-    public int TotalAmmo { get; set; }
+    [field: SerializeField] public int TotalAmmo { get; set; }
     public int CurrentAmmo;
 
     private void Awake()
@@ -33,6 +35,16 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
     private void Start()
     {
         _mainCamera = Camera.main;
+    }
+
+    private void OnEnable()
+    {
+        Inventory.OnAmmoAmountChanged += UpdateTotalAmmoAmount;
+    }
+
+    private void OnDisable()
+    {
+        Inventory.OnAmmoAmountChanged -= UpdateTotalAmmoAmount;
     }
 
     private void SetWeaponStats()
@@ -48,55 +60,61 @@ public class RangeWeaponPhysicalItem : PhysicalItemBase
         OnItemEquipped?.Invoke(_rangeWeaponSO.AmmoBoxPrefab.AmmoTemplate, CurrentAmmo, gameObject);
     }
 
-    public virtual async void Shoot()
+    public override void Equip()
     {
-        if (CurrentAmmo == 0)
-        {
-            await Reload();
-        }
-
-        CanShoot = false;
-        int milliseconds = (int)(_fireRate * 1000);
-
-        Ray ray = _mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
-        ray.origin = transform.position;
-        CurrentAmmo--;
-        OnWeaponShot?.Invoke(WeaponTemplate.WeaponAmmoType);
-        OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
-
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            Debug.Log(_rangeWeaponSO.Name + " hit " + hit.collider.gameObject.name);
-        }
-
-        await Task.Delay(milliseconds);
-
-        CanShoot = true;
+        base.Equip();
+        transform.localPosition = _rangeWeaponSO.HoldOffset;
+        TotalAmmo = (int)OnRangeWeaponEquipped?.Invoke(_rangeWeaponSO.WeaponAmmoType);
+        OnWeaponEquipped?.Invoke(CurrentAmmo, TotalAmmo);
     }
 
-    public virtual async Task Reload()
+    public override void Unequip()
+    {
+        base.Unequip();
+        OnWeaponUnequipped?.Invoke();
+    }
+
+    public IEnumerator Reload()
     {
         IsReloading = true;
-        int milliseconds = (int)(_reloadTime * 1000);
+
         int ammoToReload;
         if (TotalAmmo > AmmoClip)
-        {
             ammoToReload = AmmoClip;
-        } 
         else
-        {
             ammoToReload = TotalAmmo;
-        }
-
-        await Task.Delay(milliseconds);
 
         if (TotalAmmo == 0)
             CurrentAmmo = 0;
-        else 
+        else
             CurrentAmmo = ammoToReload;
 
+        yield return new WaitForSeconds(_reloadTime);
         OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
-
         IsReloading = false;
+    }
+
+    public void Aim(bool aimInput)
+    {
+        if (aimInput)
+            transform.localPosition = WeaponTemplate.AimPosition;
+        else
+            transform.localPosition = WeaponTemplate.HoldOffset;
+    }
+
+    protected IEnumerator AttackCoroutine()
+    {
+        CanAttack = false;
+        yield return new WaitForSeconds(FireRate);
+        CanAttack = true;
+    }
+
+    private void UpdateTotalAmmoAmount(AmmoType ammoType, int amount)
+    {
+        if (_rangeWeaponSO.WeaponAmmoType == ammoType)
+        {
+            TotalAmmo += amount;
+            OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
+        }
     }
 }

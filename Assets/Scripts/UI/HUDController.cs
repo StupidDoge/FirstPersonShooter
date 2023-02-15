@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class HUDController : MonoBehaviour
@@ -16,18 +13,16 @@ public class HUDController : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerAttackController.OnWeaponEquipped += ShowAmmoPanel;
-        PlayerAttackController.OnWeaponRemoved += HideAmmoPanel;
-        PlayerAttackController.OnTotalAmmoAmountChanged += ChangeAmmoLeftAmount;
         RangeWeaponPhysicalItem.OnCurrentAmmoAmountChanged += ChangeAmmoAmount;
+        RangeWeaponPhysicalItem.OnWeaponEquipped += ShowAmmoPanel;
+        RangeWeaponPhysicalItem.OnWeaponUnequipped += HideAmmoPanel;
     }
 
     private void OnDisable()
     {
-        PlayerAttackController.OnWeaponEquipped -= ShowAmmoPanel;
-        PlayerAttackController.OnWeaponRemoved -= HideAmmoPanel;
-        PlayerAttackController.OnTotalAmmoAmountChanged -= ChangeAmmoLeftAmount;
         RangeWeaponPhysicalItem.OnCurrentAmmoAmountChanged -= ChangeAmmoAmount;
+        RangeWeaponPhysicalItem.OnWeaponEquipped -= ShowAmmoPanel;
+        RangeWeaponPhysicalItem.OnWeaponUnequipped -= HideAmmoPanel;
     }
 
     private void ShowAmmoPanel(int currentAmmo, int totalAmmo)
@@ -42,12 +37,6 @@ public class HUDController : MonoBehaviour
     {
         _currentAmmo = currentAmmo;
         _ammoLeft = totalAmmo - currentAmmo;
-        _ammo.text = _currentAmmo.ToString() + _devider + _ammoLeft.ToString();
-    }
-
-    private void ChangeAmmoLeftAmount(int totalAmmo)
-    {
-        _ammoLeft = totalAmmo;
         _ammo.text = _currentAmmo.ToString() + _devider + _ammoLeft.ToString();
     }
 

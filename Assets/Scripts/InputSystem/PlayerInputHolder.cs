@@ -7,6 +7,8 @@ public class PlayerInputHolder : MonoBehaviour
 	public static Action OnInventoryUsed;
 	public static Action OnReloadButtonPressed;
 	public static Action OnMouseLeftButtonClicked;
+	public static Action<bool> OnMouseRightButtonHold;
+	public static Action<bool> OnMouseLeftButtonHold;
 
 	[Header("Character Input Values")]
 	public Vector2 move;
@@ -101,12 +103,14 @@ public class PlayerInputHolder : MonoBehaviour
 		if (context.started)
 		{
 			leftMouseClick = true;
+			OnMouseLeftButtonHold?.Invoke(true);
 		}
 
 		if (context.canceled)
 		{
 			leftMouseClick = false;
 			OnMouseLeftButtonClicked?.Invoke();
+			OnMouseLeftButtonHold?.Invoke(false);
 		}
 	}
 
@@ -115,12 +119,14 @@ public class PlayerInputHolder : MonoBehaviour
 		if (context.started)
 		{
 			rightMouseClick = true;
+			OnMouseRightButtonHold?.Invoke(true);
 		}
 
 		if (context.canceled)
         {
 			rightMouseClick = false;
-        }
+			OnMouseRightButtonHold?.Invoke(false);
+		}
     }
 
 	public void MoveInput(Vector2 newMoveDirection)
