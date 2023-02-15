@@ -37,6 +37,14 @@ public class HUDController : MonoBehaviour
     {
         _currentAmmo = currentAmmo;
         _ammoLeft = totalAmmo - currentAmmo;
+
+        if (_ammoLeft < 0)
+        {
+            int temp = _ammoLeft;
+            _ammoLeft += _currentAmmo;
+            _currentAmmo += temp;
+        }
+
         _ammo.text = _currentAmmo.ToString() + _devider + _ammoLeft.ToString();
     }
 
