@@ -3,13 +3,6 @@ using UnityEngine;
 public class PlayerAttackController : MonoBehaviour
 {
     [SerializeField] private Transform _itemContainer;
-    [field: SerializeField] public int PistolAmmoAmount { get; private set; }
-    [field: SerializeField] public int RifleAmmoAmount { get; private set; }
-    [field: SerializeField] public int ShotgunAmmoAmount { get; private set; }
-
-    [field: SerializeField] public int CurrentPistolAmmoAmount { get; private set; }
-    [field: SerializeField] public int CurrentRifleAmmoAmount { get; private set; }
-    [field: SerializeField] public int CurrentShotgunAmmoAmount { get; private set; }
 
     public bool ItemIsEquipped { get; private set; }
 

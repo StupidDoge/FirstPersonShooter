@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PhysicalWeaponItem : PhysicalItemBase
@@ -13,7 +11,6 @@ public abstract class PhysicalWeaponItem : PhysicalItemBase
 
     public virtual void Equip()
     {
-        transform.localRotation = Quaternion.identity;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<BoxCollider>().enabled = false;
     }

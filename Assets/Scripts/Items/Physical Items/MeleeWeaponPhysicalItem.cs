@@ -1,12 +1,25 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeWeaponPhysicalItem : PhysicalWeaponItem
 {
     [SerializeField] private MeleeWeaponSO _meleeWeaponSO;
 
+    private float _attackRate;
+
     public MeleeWeaponSO MeleeWeaponTemplate => _meleeWeaponSO;
+
+    public float AttackRate => _attackRate;
+
+    private void Start()
+    {
+        SetWeaponStats();
+    }
+
+    private void SetWeaponStats()
+    {
+        _attackRate = _meleeWeaponSO.AttackRate;
+    }
 
     public override void Interact(Interactor interactor)
     {
@@ -16,13 +29,23 @@ public class MeleeWeaponPhysicalItem : PhysicalWeaponItem
     public override void Equip()
     {
         base.Equip();
-        Debug.Log("MELEE EQUIPPED");
         transform.localPosition = _meleeWeaponSO.HoldOffset;
+        transform.localRotation = _meleeWeaponSO.HoldRotation;
     }
 
     public override void Attack()
     {
-        base.Attack();
+        if (!CanAttack)
+            return;
+
         Debug.Log("MELEE ATTACKS");
+        StartCoroutine(AttackCoroutine());
+    }
+
+    private IEnumerator AttackCoroutine()
+    {
+        CanAttack = false;
+        yield return new WaitForSeconds(_attackRate);
+        CanAttack = true;
     }
 }
