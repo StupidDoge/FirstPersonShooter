@@ -8,7 +8,7 @@ public class Inventory : MonoBehaviour
     public static Action<ItemBase, int> OnItemUpdated;
     public static Action<ItemBase> OnItemRemoved;
     public static Action<ItemBase, InventoryItem> OnActiveItemSet;
-    public static Action OnActiveItemRemoved;
+    public static Func<int> OnActiveItemRemoved;
     public static Action<AmmoType, int> OnAmmoAmountChanged;
     public static Action OnItemFromActiveSlotAdded;
 
@@ -116,11 +116,12 @@ public class Inventory : MonoBehaviour
         Remove(item.ItemSO, 1);
     }
 
-    private void RemoveActiveItem()
+    private int RemoveActiveItem()
     {
         AddFromActive(_activeItem);
         _activeItem = null;
-        OnActiveItemRemoved?.Invoke();
+        int ammo = (int)OnActiveItemRemoved?.Invoke();
+        return ammo;
     }
 
     private void DecreaseAmmo(AmmoType ammoType)

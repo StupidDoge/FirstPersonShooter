@@ -69,14 +69,23 @@ public class PlayerAttackController : MonoBehaviour
         GameObject item = Instantiate(itemSO.ItemPrefab, _itemContainer);
         var newWeapon = item.GetComponent<PhysicalWeaponItem>();
         _equippedWeapon = newWeapon;
+        if (_equippedWeapon.TryGetComponent(out RangeWeaponPhysicalItem weapon))
+            weapon.CurrentAmmo = inventoryItem.WeaponCurrentAmmoAmount;
         _equippedWeapon.Equip();
     }
 
-    private void UnequipItem()
+    private int UnequipItem()
     {
+        int ammo = -1;
+
+        if (_equippedWeapon.TryGetComponent(out RangeWeaponPhysicalItem weapon))
+            ammo = weapon.CurrentAmmo;
+
         _equippedWeapon.Unequip();
         Destroy(_itemContainer.GetComponentInChildren<PhysicalItemBase>().gameObject);
         ItemIsEquipped = false;
         _equippedWeapon = null;
+
+        return ammo;
     }
 }

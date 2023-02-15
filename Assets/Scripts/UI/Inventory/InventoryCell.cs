@@ -4,7 +4,7 @@ using System;
 
 public class InventoryCell : MonoBehaviour, IDropHandler
 {
-    public static Action OnItemUnequipped;
+    public static Func<int> OnItemUnequipped;
 
     [field: SerializeField] public int Id { get; set; }
     public InventoryItem Item { get; set; }
@@ -29,7 +29,7 @@ public class InventoryCell : MonoBehaviour, IDropHandler
         if (inventoryItem.IsEquipped)
         {
             inventoryItem.IsEquipped = false;
-            OnItemUnequipped?.Invoke();
+            inventoryItem.WeaponCurrentAmmoAmount = (int)OnItemUnequipped?.Invoke();
             return;
         }
     }
