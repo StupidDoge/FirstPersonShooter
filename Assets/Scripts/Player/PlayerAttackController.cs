@@ -7,8 +7,18 @@ public class PlayerAttackController : MonoBehaviour
     public bool ItemIsEquipped { get; private set; }
 
     private PhysicalWeaponItem _equippedWeapon;
-
     private PlayerInputHolder _playerInputHolder;
+
+    #region Sway fields
+
+    private Quaternion _originalWeaponRotation, _xAdjustment, _yAdjustment, _targetRotation;
+
+    private float _inputX;
+    private float _inputY;
+    private float _swayIntensity;
+    private float _swaySmooth;
+
+    #endregion
 
     private void Start()
     {
@@ -51,6 +61,8 @@ public class PlayerAttackController : MonoBehaviour
             {
                 _equippedWeapon.Attack();
             }
+
+            UpdateWeaponSway();
         }
     }
 
@@ -65,6 +77,9 @@ public class PlayerAttackController : MonoBehaviour
         if (_equippedWeapon.TryGetComponent(out RangeWeaponPhysicalItem weapon))
             weapon.CurrentAmmo = inventoryItem.WeaponCurrentAmmoAmount;
         _equippedWeapon.Equip();
+        _originalWeaponRotation = _equippedWeapon.transform.localRotation;
+        _swayIntensity = _equippedWeapon.SwayIntensity;
+        _swaySmooth = _equippedWeapon.SwaySmooth;
     }
 
     private int UnequipItem()
@@ -80,5 +95,17 @@ public class PlayerAttackController : MonoBehaviour
         _equippedWeapon = null;
 
         return ammo;
+    }
+
+    private void UpdateWeaponSway()
+    {
+        _inputX = _playerInputHolder.look.x;
+        _inputY = _playerInputHolder.look.y;
+
+        _xAdjustment = Quaternion.AngleAxis(-_swayIntensity * _inputX, Vector3.up);
+        _yAdjustment = Quaternion.AngleAxis(_swayIntensity * _inputY, Vector3.right);
+        _targetRotation = _originalWeaponRotation * _xAdjustment * _yAdjustment;
+
+        _equippedWeapon.transform.localRotation = Quaternion.Lerp(_equippedWeapon.transform.localRotation, _targetRotation, Time.deltaTime * _swaySmooth);
     }
 }

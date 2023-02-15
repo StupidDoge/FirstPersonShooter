@@ -31,6 +31,8 @@ public class MeleeWeaponPhysicalItem : PhysicalWeaponItem
         base.Equip();
         transform.localPosition = _meleeWeaponSO.HoldOffset;
         transform.localRotation = _meleeWeaponSO.HoldRotation;
+        SwayIntensity = _meleeWeaponSO.SwayIntensity;
+        SwaySmooth = _meleeWeaponSO.SwaySmooth;
     }
 
     public override void Attack()

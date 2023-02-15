@@ -65,6 +65,8 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IAimable, IReloadable
         base.Equip();
         transform.localPosition = _rangeWeaponSO.HoldOffset;
         transform.localRotation = _rangeWeaponSO.HoldRotation;
+        SwayIntensity = _rangeWeaponSO.SwayIntensity;
+        SwaySmooth = _rangeWeaponSO.SwaySmooth;
         TotalAmmo = (int)OnRangeWeaponEquipped?.Invoke(_rangeWeaponSO.WeaponAmmoType);
         OnWeaponEquipped?.Invoke(CurrentAmmo, TotalAmmo);
     }

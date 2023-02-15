@@ -3,6 +3,8 @@ using UnityEngine;
 public abstract class PhysicalWeaponItem : PhysicalItemBase
 {
     public bool CanAttack { get; protected set; } = true;
+    public float SwayIntensity { get; protected set; }
+    public float SwaySmooth { get; protected set; }
 
     public override void Interact(Interactor interactor)
     {
