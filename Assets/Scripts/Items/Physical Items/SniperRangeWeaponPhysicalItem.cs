@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SniperRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
+public class SniperRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
 {
     public override void Attack()
     {
@@ -29,7 +29,7 @@ public class SniperRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
         StartCoroutine(AttackCoroutine());
     }
 
-    public void Aim(bool aimInput)
+    public override void Aim(bool aimInput)
     {
         Debug.Log("SCOPE");
     }

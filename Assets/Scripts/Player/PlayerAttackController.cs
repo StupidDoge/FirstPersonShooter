@@ -43,14 +43,16 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Aim(bool aimInput)
     {
-        if (_equippedWeapon.TryGetComponent(out IAimable aimable))
-            aimable.Aim(aimInput);
+        if (_equippedWeapon != null)
+            if (_equippedWeapon.TryGetComponent(out IAimable aimable))
+                aimable.Aim(aimInput);
     }
 
     private void StartReloading()
     {
-        if (_equippedWeapon.TryGetComponent(out IReloadable reloadable))
-            StartCoroutine(reloadable.Reload());
+        if (_equippedWeapon != null)
+            if (_equippedWeapon.TryGetComponent(out IReloadable reloadable))
+                StartCoroutine(reloadable.Reload());
     }
 
     private void Update()

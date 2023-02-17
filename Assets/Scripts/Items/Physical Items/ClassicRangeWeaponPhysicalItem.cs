@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
+public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
 {
     public override void Attack()
     {
@@ -27,7 +27,7 @@ public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
         StartCoroutine(AttackCoroutine());
     }
 
-    public void Aim(bool aimInput)
+    public override void Aim(bool aimInput)
     {
         if (aimInput)
             transform.localPosition = WeaponTemplate.AimPosition;

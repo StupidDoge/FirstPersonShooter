@@ -5092,6 +5092,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1910106881}
     m_Modifications:
+    - target: {fileID: 7176087145631423122, guid: 452fba123628c8b45ac7c792f7860675,
+        type: 3}
+      propertyPath: <CurrentAmmo>k__BackingField
+      value: 600
+      objectReference: {fileID: 0}
     - target: {fileID: 7213689358512487792, guid: 452fba123628c8b45ac7c792f7860675,
         type: 3}
       propertyPath: m_RootOrder

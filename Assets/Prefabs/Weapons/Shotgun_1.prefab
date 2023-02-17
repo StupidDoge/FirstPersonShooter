@@ -130,5 +130,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f420a6cf73879e49b2ed6688ebe9e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rangeWeaponSO: {fileID: 11400000, guid: 52e995e09f351bf4c8d78b0bcdccbd6b, type: 2}
+  _rangeWeaponSO: {fileID: 11400000, guid: 45c3fa219c08a594dbfc1ed5d593ab59, type: 2}
   <CurrentAmmo>k__BackingField: 6

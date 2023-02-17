@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1162d5c50e4433c40a14875e0742c5c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a309c1260ec47b45a5af82aab0177d2, type: 3}
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   _name: Shotgun
@@ -32,3 +32,4 @@ MonoBehaviour:
   _ammoType: 2
   _ammoBoxPrefab: {fileID: 1717518572878775472, guid: a613b4cef305f334aa4bca42494d8054,
     type: 3}
+  _amountOfRays: 6

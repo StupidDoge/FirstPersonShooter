@@ -1,22 +1,59 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
-public class ShotgunRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
+public class ShotgunRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
 {
-    public override void Attack()
+    private ShotgunWeaponSO _shotgunWeaponSO;
+
+    public override void Equip()
     {
-        base.Attack();
-        Debug.Log("SHOTGUN ATTACKS");
+        base.Equip();
+        _shotgunWeaponSO = (ShotgunWeaponSO)WeaponTemplate;
     }
 
-    public void Aim(bool aimInput)
+    public override void Attack()
+    {
+        if (CurrentAmmo == 0 && TotalAmmo != 0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
+
+        if (!CanAttack || IsReloading || TotalAmmo == 0)
+            return;
+
+        for (int i = 0; i < _shotgunWeaponSO.AmountOfRays; i++)
+        {
+            Vector3 direction = MainCamera.transform.forward;
+            Vector3 spread = Vector3.zero;
+            spread += MainCamera.transform.up * Random.Range(-1f, 1f);
+            spread += MainCamera.transform.right * Random.Range(-1f, 1f);
+            direction += spread.normalized * Random.Range(0f, 0.2f);
+
+            Ray ray = MainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+            ray.origin = transform.position + direction;
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                Debug.DrawLine(MainCamera.transform.position, hit.point, Color.green, 1f);
+                Debug.Log("SHOTGUN HIT " + hit.collider.gameObject.name);
+            }
+            else
+            {
+                Debug.DrawLine(MainCamera.transform.position, MainCamera.transform.position + direction * 25f, Color.red, 1f);
+            }
+        }
+        CurrentAmmo--;
+        OnWeaponShot?.Invoke(WeaponTemplate.WeaponAmmoType);
+        OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
+
+        StartCoroutine(AttackCoroutine());
+    }
+
+    public override void Aim(bool aimInput)
     {
         if (aimInput)
             transform.localPosition = WeaponTemplate.AimPosition;
         else
             transform.localPosition = WeaponTemplate.HoldOffset;
     }
-
 }

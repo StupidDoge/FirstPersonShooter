@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IReloadable
+public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IReloadable, IAimable
 {
     public static Action<int, int> OnWeaponEquipped;
     public static Action OnWeaponUnequipped;
@@ -88,6 +88,11 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IReloadable
     {
         base.Unequip();
         OnWeaponUnequipped?.Invoke();
+    }
+
+    public virtual void Aim(bool aimInput)
+    {
+
     }
 
     public IEnumerator Reload()
