@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rangeWeaponSO: {fileID: 11400000, guid: f2cd4220ede481d43ba198bfaa8c909a, type: 2}
-  CurrentAmmo: 30
+  <CurrentAmmo>k__BackingField: 30
 --- !u!1 &2746642802270760989
 GameObject:
   m_ObjectHideFlags: 0

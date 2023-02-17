@@ -75,7 +75,7 @@ public class PlayerAttackController : MonoBehaviour
         var newWeapon = item.GetComponent<PhysicalWeaponItem>();
         _equippedWeapon = newWeapon;
         if (_equippedWeapon.TryGetComponent(out RangeWeaponPhysicalItem weapon))
-            weapon.CurrentAmmo = inventoryItem.WeaponCurrentAmmoAmount;
+            weapon.SetCurrentAmmo(inventoryItem.WeaponCurrentAmmoAmount);
         _equippedWeapon.Equip();
         _originalWeaponRotation = _equippedWeapon.transform.localRotation;
         _swayIntensity = _equippedWeapon.SwayIntensity;

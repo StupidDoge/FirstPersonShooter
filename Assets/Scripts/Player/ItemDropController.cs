@@ -28,7 +28,7 @@ public class ItemDropController : MonoBehaviour
 
         if (newItem.TryGetComponent(out RangeWeaponPhysicalItem rangeWeapon))
         {
-            rangeWeapon.CurrentAmmo = 0;
+            rangeWeapon.SetCurrentAmmo(0);
         }
     }
 }

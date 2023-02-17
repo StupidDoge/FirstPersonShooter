@@ -24,8 +24,8 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IAimable, IReloadable
 
     public bool CanShoot { get; protected set; } = true;
     public bool IsReloading { get; protected set; } = false;
-    [field: SerializeField] public int TotalAmmo { get; set; }
-    public int CurrentAmmo;
+    public int TotalAmmo { get; set; }
+    [field: SerializeField] public int CurrentAmmo { get; protected set; }
 
     private void Awake()
     {
@@ -60,6 +60,17 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IAimable, IReloadable
         OnItemEquipped?.Invoke(_rangeWeaponSO.AmmoBoxPrefab.AmmoTemplate, CurrentAmmo, gameObject);
     }
 
+    public void SetCurrentAmmo(int amount)
+    {
+        if (amount < 0)
+        {
+            Debug.LogError("Wrong ammo amount!");
+            return;
+        }
+
+        CurrentAmmo = amount;
+    }
+
     public override void Equip()
     {
         base.Equip();
@@ -68,6 +79,8 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IAimable, IReloadable
         SwayIntensity = _rangeWeaponSO.SwayIntensity;
         SwaySmooth = _rangeWeaponSO.SwaySmooth;
         TotalAmmo = (int)OnRangeWeaponEquipped?.Invoke(_rangeWeaponSO.WeaponAmmoType);
+        if (TotalAmmo <= _ammoClip)
+            CurrentAmmo = TotalAmmo;
         OnWeaponEquipped?.Invoke(CurrentAmmo, TotalAmmo);
     }
 

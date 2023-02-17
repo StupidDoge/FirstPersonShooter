@@ -131,5 +131,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rangeWeaponSO: {fileID: 11400000, guid: 52e995e09f351bf4c8d78b0bcdccbd6b, type: 2}
-  <TotalAmmo>k__BackingField: 0
-  CurrentAmmo: 6
+  <CurrentAmmo>k__BackingField: 6
