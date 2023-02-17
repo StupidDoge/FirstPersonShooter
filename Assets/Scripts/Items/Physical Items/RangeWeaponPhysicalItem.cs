@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IAimable, IReloadable
+public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IReloadable
 {
     public static Action<int, int> OnWeaponEquipped;
     public static Action OnWeaponUnequipped;
@@ -108,14 +108,6 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IAimable, IReloadable
         yield return new WaitForSeconds(_reloadTime);
         OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
         IsReloading = false;
-    }
-
-    public void Aim(bool aimInput)
-    {
-        if (aimInput)
-            transform.localPosition = WeaponTemplate.AimPosition;
-        else
-            transform.localPosition = WeaponTemplate.HoldOffset;
     }
 
     protected IEnumerator AttackCoroutine()

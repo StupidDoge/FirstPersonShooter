@@ -1,6 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
+public class SniperRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
 {
     public override void Attack()
     {
@@ -21,7 +23,7 @@ public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            Debug.Log("CLASSIC hits " + hit.collider.gameObject.name);
+            Debug.Log("Sniper rifle hits " + hit.collider.gameObject.name);
         }
 
         StartCoroutine(AttackCoroutine());
@@ -29,10 +31,6 @@ public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem, IAimable
 
     public void Aim(bool aimInput)
     {
-        if (aimInput)
-            transform.localPosition = WeaponTemplate.AimPosition;
-        else
-            transform.localPosition = WeaponTemplate.HoldOffset;
+        Debug.Log("SCOPE");
     }
-
 }
