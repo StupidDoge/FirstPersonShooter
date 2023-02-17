@@ -5,6 +5,7 @@ public abstract class PhysicalWeaponItem : PhysicalItemBase
     public bool CanAttack { get; protected set; } = true;
     public float SwayIntensity { get; protected set; }
     public float SwaySmooth { get; protected set; }
+    public bool InPlayerHands { get; protected set; }
 
     public override void Interact(Interactor interactor)
     {
@@ -15,6 +16,7 @@ public abstract class PhysicalWeaponItem : PhysicalItemBase
     {
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<BoxCollider>().enabled = false;
+        InPlayerHands = true;
     }
 
     public virtual void Attack()
@@ -24,6 +26,6 @@ public abstract class PhysicalWeaponItem : PhysicalItemBase
 
     public virtual void Unequip()
     {
-
+        InPlayerHands = false;
     }
 }

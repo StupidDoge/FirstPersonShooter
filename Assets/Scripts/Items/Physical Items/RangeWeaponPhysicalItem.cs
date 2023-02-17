@@ -117,7 +117,8 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IAimable, IReloadable
         if (_rangeWeaponSO.WeaponAmmoType == ammoType)
         {
             TotalAmmo += amount;
-            OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
+            if (InPlayerHands)
+                OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
         }
     }
 }
