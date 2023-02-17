@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
@@ -29,10 +30,12 @@ public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
 
     public override void Aim(bool aimInput)
     {
-        if (aimInput)
-            transform.localPosition = WeaponTemplate.AimPosition;
-        else
-            transform.localPosition = WeaponTemplate.HoldOffset;
+        base.Aim(aimInput);
     }
 
+    public override IEnumerator Reload()
+    {
+        Debug.Log("CLASSIC RELOAD");
+        return base.Reload();
+    }
 }

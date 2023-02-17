@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ShotgunRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
@@ -51,9 +52,12 @@ public class ShotgunRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
 
     public override void Aim(bool aimInput)
     {
-        if (aimInput)
-            transform.localPosition = WeaponTemplate.AimPosition;
-        else
-            transform.localPosition = WeaponTemplate.HoldOffset;
+        base.Aim(aimInput);
+    }
+
+    public override IEnumerator Reload()
+    {
+        Debug.Log("SHOTGUN RELOAD");
+        return base.Reload();
     }
 }

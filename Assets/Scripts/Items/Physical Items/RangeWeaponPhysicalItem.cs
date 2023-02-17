@@ -92,10 +92,13 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IReloadable, IAimable
 
     public virtual void Aim(bool aimInput)
     {
-
+        if (aimInput)
+            transform.localPosition = WeaponTemplate.AimPosition;
+        else
+            transform.localPosition = WeaponTemplate.HoldOffset;
     }
 
-    public IEnumerator Reload()
+    public virtual IEnumerator Reload()
     {
         IsReloading = true;
 

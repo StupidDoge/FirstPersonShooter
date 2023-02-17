@@ -31,6 +31,12 @@ public class SniperRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
 
     public override void Aim(bool aimInput)
     {
-        Debug.Log("SCOPE");
+        Debug.Log("SCOPE AIM");
+    }
+
+    public override IEnumerator Reload()
+    {
+        Debug.Log("SNIPER RELOAD");
+        return base.Reload();
     }
 }
