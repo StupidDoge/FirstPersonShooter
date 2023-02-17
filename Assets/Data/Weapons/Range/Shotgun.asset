@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1162d5c50e4433c40a14875e0742c5c4, type: 3}
+  m_Name: Shotgun
+  m_EditorClassIdentifier: 
+  _name: Shotgun
+  _sprite: {fileID: 21300000, guid: 63e63c2f66512834daf422f34f54f572, type: 3}
+  _itemPrefab: {fileID: 8023159355695605706, guid: 452fba123628c8b45ac7c792f7860675,
+    type: 3}
+  _equippable: 1
+  _usable: 0
+  _stackable: 0
+  _weaponType: 1
+  _swayIntensity: 0
+  _swaySmooth: 0
+  _holdOffset: {x: 0.05, y: 0, z: -0.05}
+  _holdRotation: {x: 0.49999997, y: -0.49999997, z: -0.49999997, w: -0.49999997}
+  _aimPosition: {x: -0.182, y: 0, z: 0}
+  _ammoClip: 6
+  _fireRate: 1
+  _reloadTime: 6
+  _type: 2
+  _ammoType: 2
+  _ammoBoxPrefab: {fileID: 1717518572878775472, guid: a613b4cef305f334aa4bca42494d8054,
+    type: 3}

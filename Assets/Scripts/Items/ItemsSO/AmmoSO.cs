@@ -16,5 +16,6 @@ public enum AmmoType
 {
     Pistol,
     Rifle,
-    Shotgun
+    Shotgun,
+    SniperRifle
 }

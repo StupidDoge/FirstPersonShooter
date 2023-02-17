@@ -20,8 +20,8 @@ MonoBehaviour:
   _usable: 0
   _stackable: 0
   _weaponType: 1
-  _swayIntensity: 1
-  _swaySmooth: 10
+  _swayIntensity: 0.25
+  _swaySmooth: 2
   _holdOffset: {x: -0.04, y: 0.05, z: -0.06}
   _holdRotation: {x: 0, y: 0, z: 0, w: 0}
   _aimPosition: {x: -0.182, y: 0.05, z: -0.06}

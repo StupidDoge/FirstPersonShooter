@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24a1ec8d73c7cbe48a26e4bcb0f770d0, type: 3}
+  m_Name: Sniper Rifle Ammo
+  m_EditorClassIdentifier: 
+  _name: Sniper Rifle Ammo
+  _sprite: {fileID: 21300000, guid: 47f16c739c7645e4699130f3fcc84856, type: 3}
+  _itemPrefab: {fileID: 5101794962934744718, guid: 329441dfb418e1f489283db0653d11ce,
+    type: 3}
+  _equippable: 0
+  _usable: 0
+  _stackable: 1
+  _type: 3
+  _damage: 25
