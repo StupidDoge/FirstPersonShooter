@@ -6,6 +6,7 @@ public class PlayerInputHolder : MonoBehaviour
 {
 	public static Action OnInventoryUsed;
 	public static Action OnReloadButtonPressed;
+	public static Action OnInteractButtonPressed;
 	public static Action OnMouseLeftButtonClicked;
 	public static Action<bool> OnMouseRightButtonHold;
 	public static Action<bool> OnMouseLeftButtonHold;
@@ -67,7 +68,10 @@ public class PlayerInputHolder : MonoBehaviour
 			InteractionInput(true);
 
 		if (context.canceled)
+        {
+			OnInteractButtonPressed?.Invoke();
 			InteractionInput(false);
+		}
 	}
 
 	public void OnInventory(InputAction.CallbackContext context)
