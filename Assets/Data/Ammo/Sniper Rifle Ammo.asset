@@ -16,6 +16,7 @@ MonoBehaviour:
   _sprite: {fileID: 21300000, guid: 47f16c739c7645e4699130f3fcc84856, type: 3}
   _itemPrefab: {fileID: 5101794962934744718, guid: 329441dfb418e1f489283db0653d11ce,
     type: 3}
+  _itemPickupSound: {fileID: 8300000, guid: 108a9f3eb24a8c74fa631da134dbb379, type: 3}
   _equippable: 0
   _usable: 0
   _stackable: 1

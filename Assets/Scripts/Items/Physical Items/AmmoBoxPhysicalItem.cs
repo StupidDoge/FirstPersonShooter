@@ -10,8 +10,9 @@ public class AmmoBoxPhysicalItem : PhysicalItemBase
 
     public AmmoSO AmmoTemplate => _ammoSO;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         SetAmmoBoxStats();
     }
 
@@ -28,6 +29,7 @@ public class AmmoBoxPhysicalItem : PhysicalItemBase
 
     public override void Interact(Interactor interactor)
     {
+        OnPickupAudioClipTriggered?.Invoke(_ammoSO.ItemPickupSound);
         OnItemEquipped?.Invoke(_ammoSO, _amount, gameObject);
     }
 }

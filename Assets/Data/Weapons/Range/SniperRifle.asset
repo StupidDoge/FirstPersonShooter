@@ -16,6 +16,7 @@ MonoBehaviour:
   _sprite: {fileID: 21300000, guid: f197f3441f75e5c49aba2628ca19a847, type: 3}
   _itemPrefab: {fileID: 2564915597186917724, guid: 49bd0538568f59e418f6613076402c44,
     type: 3}
+  _itemPickupSound: {fileID: 8300000, guid: 108a9f3eb24a8c74fa631da134dbb379, type: 3}
   _equippable: 1
   _usable: 0
   _stackable: 0
@@ -28,6 +29,7 @@ MonoBehaviour:
   _ammoClip: 6
   _fireRate: 1
   _reloadTime: 3
+  _shotSound: {fileID: 8300000, guid: a93febbf501489341ba10c29bb47cc91, type: 3}
   _type: 1
   _ammoType: 3
   _ammoBoxPrefab: {fileID: 5101794962934744715, guid: 329441dfb418e1f489283db0653d11ce,

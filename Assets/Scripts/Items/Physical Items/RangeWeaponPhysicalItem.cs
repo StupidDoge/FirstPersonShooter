@@ -32,8 +32,9 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IReloadable, IAimable
         SetWeaponStats();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _mainCamera = Camera.main;
     }
 
@@ -56,6 +57,7 @@ public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IReloadable, IAimable
 
     public override void Interact(Interactor interactor)
     {
+        OnPickupAudioClipTriggered?.Invoke(_rangeWeaponSO.ItemPickupSound);
         OnItemEquipped?.Invoke(_rangeWeaponSO, baseAmount, gameObject);
         OnItemEquipped?.Invoke(_rangeWeaponSO.AmmoBoxPrefab.AmmoTemplate, CurrentAmmo, gameObject);
     }

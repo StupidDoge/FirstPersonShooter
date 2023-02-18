@@ -7,6 +7,11 @@ public abstract class PhysicalWeaponItem : PhysicalItemBase
     public float SwaySmooth { get; protected set; }
     public bool InPlayerHands { get; protected set; }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
+
     public override void Interact(Interactor interactor)
     {
         throw new System.NotImplementedException();

@@ -11,8 +11,9 @@ public class MeleeWeaponPhysicalItem : PhysicalWeaponItem
 
     public float AttackRate => _attackRate;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         SetWeaponStats();
     }
 
@@ -23,6 +24,7 @@ public class MeleeWeaponPhysicalItem : PhysicalWeaponItem
 
     public override void Interact(Interactor interactor)
     {
+        OnPickupAudioClipTriggered?.Invoke(_meleeWeaponSO.ItemPickupSound);
         OnItemEquipped?.Invoke(_meleeWeaponSO, baseAmount, gameObject);
     }
 

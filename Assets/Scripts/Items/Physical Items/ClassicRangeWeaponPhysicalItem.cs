@@ -17,6 +17,7 @@ public class ClassicRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
         Ray ray = MainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = transform.position;
         CurrentAmmo--;
+        audioSource.PlayOneShot(WeaponTemplate.ShotSound);
         OnWeaponShot?.Invoke(WeaponTemplate.WeaponAmmoType);
         OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
 

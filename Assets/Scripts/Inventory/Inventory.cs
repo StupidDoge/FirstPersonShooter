@@ -59,14 +59,6 @@ public class Inventory : MonoBehaviour
                     AmmoSO ammoSO = (AmmoSO)item;
                     OnAmmoAmountChanged?.Invoke(ammoSO.Type, amount);
                 }
-                Destroy(physicalItem);
-            }
-            else
-            {
-                if (physicalItem.TryGetComponent(out RangeWeaponPhysicalItem weapon))
-                {
-                    Destroy(physicalItem);
-                }
             }
         }
         else if (!_inventory.ContainsKey(item) && ActiveItem != item && amount != 0)
@@ -78,8 +70,9 @@ public class Inventory : MonoBehaviour
                 AmmoSO ammoSO = (AmmoSO)item;
                 OnAmmoAmountChanged?.Invoke(ammoSO.Type, amount);
             }
-            Destroy(physicalItem);
         }
+
+        Destroy(physicalItem);
     }
 
     private void AddFromActive(ItemBase item)

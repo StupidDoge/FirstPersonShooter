@@ -44,6 +44,7 @@ public class ShotgunRangeWeaponPhysicalItem : RangeWeaponPhysicalItem
             }
         }
         CurrentAmmo--;
+        audioSource.PlayOneShot(_shotgunWeaponSO.ShotSound);
         OnWeaponShot?.Invoke(WeaponTemplate.WeaponAmmoType);
         OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
 
