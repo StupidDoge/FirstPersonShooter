@@ -1,4 +1,5 @@
 using UnityEngine;
+using ItemsSystem;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerAudioController : MonoBehaviour
