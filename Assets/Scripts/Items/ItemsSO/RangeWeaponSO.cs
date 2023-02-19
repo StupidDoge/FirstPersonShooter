@@ -8,7 +8,7 @@ public class RangeWeaponSO : WeaponSO
     [SerializeField] private float _fireRate;
     [SerializeField] private float _reloadTime;
     [SerializeField] private AudioClip _shotSound;
-    [SerializeField] private RangeWeaponType _type;
+    [SerializeField] private WeaponShootingType _shootingType;
     [SerializeField] private AmmoType _ammoType;
     [SerializeField] private AmmoBoxPhysicalItem _ammoBoxPrefab;
 
@@ -17,12 +17,12 @@ public class RangeWeaponSO : WeaponSO
     public float FireRate => _fireRate;
     public float ReloadTime => _reloadTime;
     public AudioClip ShotSound => _shotSound;
-    public RangeWeaponType Type => _type;
+    public WeaponShootingType ShootingType => _shootingType;
     public AmmoType WeaponAmmoType => _ammoType;
     public AmmoBoxPhysicalItem AmmoBoxPrefab => _ammoBoxPrefab;
 }
 
-public enum RangeWeaponType
+public enum WeaponShootingType
 {
     Classic = 1,
     Shotgun = 2

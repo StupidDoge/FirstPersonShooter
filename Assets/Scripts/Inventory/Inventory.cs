@@ -4,17 +4,17 @@ using System;
 
 public class Inventory : MonoBehaviour
 {
-    public static Action<ItemBase, int, GameObject> OnItemAdded;
-    public static Action<ItemBase, int> OnItemUpdated;
-    public static Action<ItemBase> OnItemRemoved;
-    public static Action<ItemBase, InventoryItem> OnActiveItemSet;
-    public static Func<int> OnActiveItemRemoved;
-    public static Action<AmmoType, int> OnAmmoAmountChanged;
-    public static Action OnItemFromActiveSlotAdded;
+    public event Action<ItemBase, int, GameObject> OnItemAdded;
+    public event Action<ItemBase, int> OnItemUpdated;
+    public event Action<ItemBase> OnItemRemoved;
+    public event Action<ItemBase, InventoryItem> OnActiveItemSet;
+    public event Func<int> OnActiveItemRemoved;
+    public static event Action<AmmoType, int> OnAmmoAmountChanged;
+    public event Action OnItemFromActiveSlotAdded;
 
     public static readonly int INVENTORY_CAPACITY = 16;
 
-    private Dictionary<ItemBase, int> _inventory = new(16);
+    private readonly Dictionary<ItemBase, int> _inventory = new();
     private ItemBase _activeItem;
 
     public Dictionary<ItemBase, int> InventoryDictionary => _inventory;

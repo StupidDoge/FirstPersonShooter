@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class RangeWeaponPhysicalItem : PhysicalWeaponItem, IReloadable, IAimable
 {
-    public static Action<int, int> OnWeaponEquipped;
-    public static Action OnWeaponUnequipped;
+    public static event Action<int, int> OnWeaponEquipped;
+    public static event Action OnWeaponUnequipped;
     public static Action<AmmoType> OnWeaponShot;
     public static Action<int, int> OnCurrentAmmoAmountChanged;
-    public static Func<AmmoType, int> OnRangeWeaponEquipped;
+    public static event Func<AmmoType, int> OnRangeWeaponEquipped;
 
     [SerializeField] private RangeWeaponSO _rangeWeaponSO;
 

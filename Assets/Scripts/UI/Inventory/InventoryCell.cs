@@ -4,7 +4,7 @@ using System;
 
 public class InventoryCell : MonoBehaviour, IDropHandler
 {
-    public static Func<int> OnItemUnequipped;
+    public static event Func <int> OnItemUnequipped;
 
     [field: SerializeField] public int Id { get; set; }
     public InventoryItem Item { get; set; }

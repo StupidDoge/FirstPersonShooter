@@ -6,7 +6,7 @@ using System;
 
 public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public static Action<ItemBase, int> OnItemDropped;
+    public static event Action<ItemBase, int> OnItemDropped;
     public static Action<InventoryItem> OnItemEquipped;
 
     [SerializeField] private TextMeshProUGUI _itemName;
@@ -30,7 +30,7 @@ public class ItemContextMenu : MonoBehaviour, IPointerEnterHandler, IPointerExit
         _item = inventoryItem;
         _itemSO = inventoryItem.ItemSO;
         _amount = amount;
-        _itemName.text = inventoryItem.ItemSO.Name + " " + _amount;
+        _itemName.text = inventoryItem.ItemSO.Name;
         if (inventoryItem.ItemSO.Equippable)
             _equipButton.gameObject.SetActive(true);
 

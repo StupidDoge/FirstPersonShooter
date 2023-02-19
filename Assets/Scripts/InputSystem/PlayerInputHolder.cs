@@ -4,12 +4,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputHolder : MonoBehaviour
 {
-	public static Action OnInventoryUsed;
-	public static Action OnReloadButtonPressed;
-	public static Action OnInteractButtonPressed;
-	public static Action OnMouseLeftButtonClicked;
-	public static Action<bool> OnMouseRightButtonHold;
-	public static Action<bool> OnMouseLeftButtonHold;
+	public event Action OnInventoryUsed;
+	public event Action OnReloadButtonPressed;
+	public event Action OnMouseLeftButtonClicked;
+	public event Action OnInteractButtonPressed;
+	public event Action<bool> OnMouseRightButtonHold;
+	public event Action<bool> OnMouseLeftButtonHold;
 
 	[Header("Character Input Values")]
 	public Vector2 move;
@@ -28,11 +28,6 @@ public class PlayerInputHolder : MonoBehaviour
 	[Header("Mouse Cursor Settings")]
 	public bool cursorLocked = true;
 	public bool cursorInputForLook = true;
-
-	[Header("Interaction settings")]
-	[SerializeField] private float _interactionTimeout = 0.1f;
-
-	private bool _canInteract = true;
 
     public void OnMove(InputAction.CallbackContext context)
 	{

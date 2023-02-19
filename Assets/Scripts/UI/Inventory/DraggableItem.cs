@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public static Action OnItemDragged;
+    public static event Action OnItemDragged;
 
     private CanvasGroup _canvasGroup;
     public Transform ParentAfterDrag { get; set; }

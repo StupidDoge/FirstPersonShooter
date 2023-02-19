@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class InventoryPanel : MonoBehaviour
 {
     [SerializeField] private GameObject _panel;
     [SerializeField] private GameObject _contentContainer;
     [SerializeField] private Inventory _inventory;
+    [SerializeField] private PlayerInputHolder _inputHolder;
     [SerializeField] private GameObject _inventoryItem;
     [SerializeField] private ItemContextMenu _itemContextMenu;
     [SerializeField] private Transform _activeItemCell;
@@ -30,27 +30,27 @@ public class InventoryPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInputHolder.OnInventoryUsed += InventoryPanelSetActive;
-        PlayerInputHolder.OnMouseLeftButtonClicked += CheckLeftMouseButtonClick;
-        Inventory.OnItemAdded += AddItem;
-        Inventory.OnItemUpdated += UpdateItem;
-        Inventory.OnItemRemoved += RemoveItem;
+        _inputHolder.OnInventoryUsed += InventoryPanelSetActive;
+        _inputHolder.OnMouseLeftButtonClicked += CheckLeftMouseButtonClick;
+        _inventory.OnItemAdded += AddItem;
+        _inventory.OnItemUpdated += UpdateItem;
+        _inventory.OnItemRemoved += RemoveItem;
+        _inventory.OnActiveItemSet += MoveItemToActiveCell;
+        _inventory.OnItemFromActiveSlotAdded += SearchFirstEmptyCell;
         InventoryItem.OnContextMenuOpened += OpenContextMenu;
-        Inventory.OnActiveItemSet += MoveItemToActiveCell;
-        Inventory.OnItemFromActiveSlotAdded += SearchFirstEmptyCell;
         DraggableItem.OnItemDragged += SearchFirstEmptyCell;
     }
 
     private void OnDisable()
     {
-        PlayerInputHolder.OnInventoryUsed -= InventoryPanelSetActive;
-        PlayerInputHolder.OnMouseLeftButtonClicked -= CheckLeftMouseButtonClick;
-        Inventory.OnItemAdded -= AddItem;
-        Inventory.OnItemUpdated -= UpdateItem;
-        Inventory.OnItemRemoved -= RemoveItem;
+        _inputHolder.OnInventoryUsed -= InventoryPanelSetActive;
+        _inputHolder.OnMouseLeftButtonClicked -= CheckLeftMouseButtonClick;
+        _inventory.OnItemAdded -= AddItem;
+        _inventory.OnItemUpdated -= UpdateItem;
+        _inventory.OnItemRemoved -= RemoveItem;
+        _inventory.OnActiveItemSet -= MoveItemToActiveCell;
+        _inventory.OnItemFromActiveSlotAdded -= SearchFirstEmptyCell;
         InventoryItem.OnContextMenuOpened -= OpenContextMenu;
-        Inventory.OnActiveItemSet -= MoveItemToActiveCell;
-        Inventory.OnItemFromActiveSlotAdded -= SearchFirstEmptyCell;
         DraggableItem.OnItemDragged -= SearchFirstEmptyCell;
     }
 

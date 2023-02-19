@@ -8,6 +8,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private PhysicalWeaponItem _equippedWeapon;
     private PlayerInputHolder _playerInputHolder;
+    private Inventory _inventory;
 
     #region Sway fields
 
@@ -20,25 +21,26 @@ public class PlayerAttackController : MonoBehaviour
 
     #endregion
 
-    private void Start()
+    private void Awake()
     {
         _playerInputHolder = GetComponent<PlayerInputHolder>();
+        _inventory = GetComponent<Inventory>();
     }
 
     private void OnEnable()
     {
-        Inventory.OnActiveItemSet += EquipItem;
-        Inventory.OnActiveItemRemoved += UnequipItem;
-        PlayerInputHolder.OnReloadButtonPressed += StartReloading;
-        PlayerInputHolder.OnMouseRightButtonHold += Aim;
+        _inventory.OnActiveItemSet += EquipItem;
+        _inventory.OnActiveItemRemoved += UnequipItem;
+        _playerInputHolder.OnReloadButtonPressed += StartReloading;
+        _playerInputHolder.OnMouseRightButtonHold += Aim;
     }
 
     private void OnDisable()
     {
-        Inventory.OnActiveItemSet -= EquipItem;
-        Inventory.OnActiveItemRemoved -= UnequipItem;
-        PlayerInputHolder.OnReloadButtonPressed -= StartReloading;
-        PlayerInputHolder.OnMouseRightButtonHold -= Aim;
+        _inventory.OnActiveItemSet -= EquipItem;
+        _inventory.OnActiveItemRemoved -= UnequipItem;
+        _playerInputHolder.OnReloadButtonPressed -= StartReloading;
+        _playerInputHolder.OnMouseRightButtonHold -= Aim;
     }
 
     private void Aim(bool aimInput)

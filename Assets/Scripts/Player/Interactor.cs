@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
+    [SerializeField] private PlayerInputHolder _inputHolder;
     [SerializeField] private Transform _interactionPoint;
     [SerializeField] private float _interactionPointRadius = 0.5f;
     [SerializeField] private LayerMask _interactionLayer;
@@ -12,12 +13,12 @@ public class Interactor : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInputHolder.OnInteractButtonPressed += Interact;
+        _inputHolder.OnInteractButtonPressed += Interact;
     }
 
     private void OnDisable()
     {
-        PlayerInputHolder.OnInteractButtonPressed -= Interact;
+        _inputHolder.OnInteractButtonPressed -= Interact;
     }
 
     private void Interact()

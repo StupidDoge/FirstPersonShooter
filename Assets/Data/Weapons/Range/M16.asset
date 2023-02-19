@@ -30,7 +30,7 @@ MonoBehaviour:
   _fireRate: 0.05
   _reloadTime: 2
   _shotSound: {fileID: 8300000, guid: a93febbf501489341ba10c29bb47cc91, type: 3}
-  _type: 1
+  _shootingType: 1
   _ammoType: 1
   _ammoBoxPrefab: {fileID: 2731569466259479736, guid: 496bc1d95006b544e82bcee88822805a,
     type: 3}

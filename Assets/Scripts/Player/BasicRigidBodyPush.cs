@@ -2,13 +2,13 @@
 
 public class BasicRigidBodyPush : MonoBehaviour
 {
-	public LayerMask pushLayers;
-	public bool canPush;
-	[Range(0.5f, 5f)] public float strength = 1.1f;
+	[SerializeField] private LayerMask _pushLayers;
+	[SerializeField] private bool _canPush;
+	[SerializeField] [Range(0.5f, 5f)] private float _strength = 1.1f;
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		if (canPush) 
+		if (_canPush) 
 			PushRigidBodies(hit);
 	}
 
@@ -19,7 +19,7 @@ public class BasicRigidBodyPush : MonoBehaviour
 			return;
 
 		var bodyLayerMask = 1 << body.gameObject.layer;
-		if ((bodyLayerMask & pushLayers.value) == 0) 
+		if ((bodyLayerMask & _pushLayers.value) == 0) 
 			return;
 
 		if (hit.moveDirection.y < -0.3f) 
@@ -27,6 +27,6 @@ public class BasicRigidBodyPush : MonoBehaviour
 
 		Vector3 pushDir = new Vector3(hit.moveDirection.x, 0.0f, hit.moveDirection.z);
 
-		body.AddForce(pushDir * strength, ForceMode.Impulse);
+		body.AddForce(pushDir * _strength, ForceMode.Impulse);
 	}
 }

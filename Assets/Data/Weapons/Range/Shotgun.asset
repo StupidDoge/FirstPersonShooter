@@ -28,9 +28,9 @@ MonoBehaviour:
   _aimPosition: {x: -0.182, y: 0, z: 0}
   _ammoClip: 6
   _fireRate: 1
-  _reloadTime: 6
+  _reloadTime: 1
   _shotSound: {fileID: 8300000, guid: a93febbf501489341ba10c29bb47cc91, type: 3}
-  _type: 2
+  _shootingType: 2
   _ammoType: 2
   _ammoBoxPrefab: {fileID: 1717518572878775472, guid: a613b4cef305f334aa4bca42494d8054,
     type: 3}

@@ -5,7 +5,7 @@ using System;
 
 public class InventoryItem : MonoBehaviour
 {
-    public static Action<InventoryItem, int> OnContextMenuOpened;
+    public static event Action<InventoryItem, int> OnContextMenuOpened;
 
     public int CellNumber { get; set; }
     public bool IsEquipped { get; set; }
