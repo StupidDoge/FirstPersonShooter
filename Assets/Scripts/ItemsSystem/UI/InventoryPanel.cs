@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Core;
+using Zenject;
 
 namespace ItemsSystem
 {
@@ -8,15 +9,22 @@ namespace ItemsSystem
     {
         [SerializeField] private GameObject _panel;
         [SerializeField] private GameObject _contentContainer;
-        [SerializeField] private Inventory _inventory;
-        [SerializeField] private PlayerInputHolder _inputHolder;
         [SerializeField] private GameObject _inventoryItem;
         [SerializeField] private ItemContextMenu _itemContextMenu;
         [SerializeField] private Transform _activeItemCell;
 
         private List<InventoryCell> _emptyCells;
+        private int _firstEmptyCell;
 
-        [SerializeField] private int _firstEmptyCell;
+        private Inventory _inventory;
+        private PlayerInputHolder _inputHolder;
+
+        [Inject]
+        private void Construct(FirstPersonController firstPersonController)
+        {
+            _inputHolder = firstPersonController.gameObject.GetComponent<PlayerInputHolder>();
+            _inventory = firstPersonController.gameObject.GetComponent<Inventory>();
+        }
 
         private void Start()
         {
