@@ -5,11 +5,11 @@ namespace ItemsSystem
 {
     public abstract class PhysicalWeaponItem : PhysicalItemBase
     {
-        public static Action<AudioClip> OnWeaponEquipSoundTriggered;
-
         [SerializeField] private WeaponSO _weaponSO;
         [SerializeField] private int _interactableLayer;
         [SerializeField] private int _weaponLayer;
+
+        protected AudioSource AudioSource { get; private set; }
 
         public WeaponSO BaseTemplate => _weaponSO;
         public bool CanAttack { get; protected set; } = true;
@@ -17,9 +17,9 @@ namespace ItemsSystem
         public float SwaySmooth { get; protected set; }
         public bool InPlayerHands { get; protected set; }
 
-        protected override void Start()
+        protected virtual void Start()
         {
-            base.Start();
+            AudioSource = GetComponent<AudioSource>();
         }
 
         public virtual void Equip()

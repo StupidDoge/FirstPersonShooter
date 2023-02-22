@@ -20,7 +20,7 @@ namespace ItemsSystem
             ray.origin = transform.position;
             CurrentAmmo--;
             PlayMuzzleFlash();
-            audioSource.PlayOneShot(RangeWeaponTemplate.ShotSound);
+            AudioSource.PlayOneShot(RangeWeaponTemplate.ShotSound);
             OnWeaponShot?.Invoke(RangeWeaponTemplate.WeaponAmmoType);
             OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
 

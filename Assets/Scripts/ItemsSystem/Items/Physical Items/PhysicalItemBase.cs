@@ -10,13 +10,6 @@ namespace ItemsSystem
 
         public readonly int baseAmount = 1;
 
-        protected AudioSource audioSource;
-
-        protected virtual void Start()
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
-
         public abstract void Interact();
     }
 }

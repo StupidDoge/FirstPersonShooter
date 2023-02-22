@@ -12,9 +12,8 @@ namespace ItemsSystem
 
         public AmmoSO AmmoTemplate => _ammoSO;
 
-        protected override void Start()
+        private void Start()
         {
-            base.Start();
             SetAmmoBoxStats();
         }
 

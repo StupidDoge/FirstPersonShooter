@@ -1,10 +1,13 @@
 using UnityEngine;
 using Core;
+using System;
 
 namespace ItemsSystem
 {
     public class PlayerItemHolder : MonoBehaviour
     {
+        public event Action<AudioClip> OnItemEquipped;
+
         [SerializeField] private Transform _itemContainer;
 
         public bool ItemIsEquipped { get; private set; }
@@ -84,6 +87,7 @@ namespace ItemsSystem
             if (_equippedWeapon.TryGetComponent(out RangeWeaponPhysicalItem weapon))
                 weapon.SetCurrentAmmo(inventoryItem.WeaponCurrentAmmoAmount);
             _equippedWeapon.Equip();
+            OnItemEquipped?.Invoke(_equippedWeapon.BaseTemplate.EquipSound);
             _originalWeaponRotation = _equippedWeapon.transform.localRotation;
             _swayIntensity = _equippedWeapon.SwayIntensity;
             _swaySmooth = _equippedWeapon.SwaySmooth;

@@ -49,7 +49,7 @@ namespace ItemsSystem
 
             CurrentAmmo--;
             PlayMuzzleFlash();
-            audioSource.PlayOneShot(_shotgunWeaponSO.ShotSound);
+            AudioSource.PlayOneShot(_shotgunWeaponSO.ShotSound);
             OnWeaponShot?.Invoke(_shotgunWeaponSO.WeaponAmmoType);
             OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
 

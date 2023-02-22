@@ -89,7 +89,6 @@ namespace ItemsSystem
             if (TotalAmmo <= _ammoClip)
                 CurrentAmmo = TotalAmmo;
             OnWeaponEquipped?.Invoke(CurrentAmmo, TotalAmmo);
-            OnWeaponEquipSoundTriggered?.Invoke(RangeWeaponTemplate.EquipSound);
         }
 
         public override void Unequip()
