@@ -37,6 +37,7 @@ namespace ItemsSystem
             transform.localRotation = _meleeWeaponSO.HoldRotation;
             SwayIntensity = _meleeWeaponSO.SwayIntensity;
             SwaySmooth = _meleeWeaponSO.SwaySmooth;
+            OnWeaponEquipSoundTriggered?.Invoke(_meleeWeaponSO.EquipSound);
         }
 
         public override void Attack()

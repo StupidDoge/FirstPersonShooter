@@ -8,22 +8,24 @@ namespace Core
     {
         private AudioSource _audioSource;
 
-        private void Start()
+        private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
         }
 
         private void OnEnable()
         {
-            PhysicalItemBase.OnPickupAudioClipTriggered += PlayPickupAudioClip;
+            PhysicalItemBase.OnPickupAudioClipTriggered += PlayAudioClip;
+            PhysicalWeaponItem.OnWeaponEquipSoundTriggered += PlayAudioClip;
         }
 
         private void OnDisable()
         {
-            PhysicalItemBase.OnPickupAudioClipTriggered -= PlayPickupAudioClip;
+            PhysicalItemBase.OnPickupAudioClipTriggered -= PlayAudioClip;
+            PhysicalWeaponItem.OnWeaponEquipSoundTriggered += PlayAudioClip;
         }
 
-        private void PlayPickupAudioClip(AudioClip audioClip)
+        private void PlayAudioClip(AudioClip audioClip)
         {
             _audioSource.PlayOneShot(audioClip);
         }

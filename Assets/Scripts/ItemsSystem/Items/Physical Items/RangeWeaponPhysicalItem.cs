@@ -13,6 +13,7 @@ namespace ItemsSystem
         public static event Func<AmmoType, int> OnRangeWeaponEquipped;
 
         [SerializeField] private RangeWeaponSO _rangeWeaponSO;
+        [SerializeField] protected ParticleSystem muzzleFlash;
 
         private int _ammoClip;
         private float _fireRate;
@@ -86,6 +87,7 @@ namespace ItemsSystem
             if (TotalAmmo <= _ammoClip)
                 CurrentAmmo = TotalAmmo;
             OnWeaponEquipped?.Invoke(CurrentAmmo, TotalAmmo);
+            OnWeaponEquipSoundTriggered?.Invoke(_rangeWeaponSO.EquipSound);
         }
 
         public override void Unequip()
@@ -127,6 +129,13 @@ namespace ItemsSystem
             CanAttack = false;
             yield return new WaitForSeconds(FireRate);
             CanAttack = true;
+        }
+
+        protected void PlayMuzzleFlash()
+        {
+            if (muzzleFlash.isPlaying)
+                muzzleFlash.Stop();
+            muzzleFlash.Play();
         }
 
         private void UpdateTotalAmmoAmount(AmmoType ammoType, int amount)

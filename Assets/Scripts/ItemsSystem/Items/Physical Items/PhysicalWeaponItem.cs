@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace ItemsSystem
 {
     public abstract class PhysicalWeaponItem : PhysicalItemBase
     {
+        public static Action<AudioClip> OnWeaponEquipSoundTriggered;
+
         [SerializeField] private int _interactableLayer;
         [SerializeField] private int _weaponLayer;
 
