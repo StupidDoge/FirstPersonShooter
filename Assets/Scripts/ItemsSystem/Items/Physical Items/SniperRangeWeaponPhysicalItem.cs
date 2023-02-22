@@ -20,8 +20,8 @@ namespace ItemsSystem
             ray.origin = transform.position;
             CurrentAmmo--;
             PlayMuzzleFlash();
-            audioSource.PlayOneShot(WeaponTemplate.ShotSound);
-            OnWeaponShot?.Invoke(WeaponTemplate.WeaponAmmoType);
+            audioSource.PlayOneShot(RangeWeaponTemplate.ShotSound);
+            OnWeaponShot?.Invoke(RangeWeaponTemplate.WeaponAmmoType);
             OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
 
             if (Physics.Raycast(ray, out RaycastHit hit))

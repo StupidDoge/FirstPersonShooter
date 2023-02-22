@@ -10,7 +10,8 @@ namespace ItemsSystem
         public override void Equip()
         {
             base.Equip();
-            _shotgunWeaponSO = (ShotgunWeaponSO)WeaponTemplate;
+
+            _shotgunWeaponSO = (ShotgunWeaponSO)RangeWeaponTemplate;
         }
 
         public override void Attack()
@@ -45,10 +46,11 @@ namespace ItemsSystem
                     Debug.DrawLine(MainCamera.transform.position, MainCamera.transform.position + direction * 25f, Color.red, 1f);
                 }
             }
+
             CurrentAmmo--;
             PlayMuzzleFlash();
             audioSource.PlayOneShot(_shotgunWeaponSO.ShotSound);
-            OnWeaponShot?.Invoke(WeaponTemplate.WeaponAmmoType);
+            OnWeaponShot?.Invoke(_shotgunWeaponSO.WeaponAmmoType);
             OnCurrentAmmoAmountChanged?.Invoke(CurrentAmmo, TotalAmmo);
 
             StartCoroutine(AttackCoroutine());

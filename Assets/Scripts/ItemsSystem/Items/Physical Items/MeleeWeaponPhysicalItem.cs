@@ -5,13 +5,19 @@ namespace ItemsSystem
 {
     public class MeleeWeaponPhysicalItem : PhysicalWeaponItem
     {
-        [SerializeField] private MeleeWeaponSO _meleeWeaponSO;
-
         private float _attackRate;
 
-        public MeleeWeaponSO MeleeWeaponTemplate => _meleeWeaponSO;
-
         public float AttackRate => _attackRate;
+
+        public MeleeWeaponSO MeleeWeaponTemplate { get; private set; }
+
+        private void Awake()
+        {
+            if (!(BaseTemplate is MeleeWeaponSO))
+                Debug.LogError(name + " item has been assigned with wrong template!");
+
+            MeleeWeaponTemplate = (MeleeWeaponSO)BaseTemplate;
+        }
 
         protected override void Start()
         {
@@ -21,23 +27,23 @@ namespace ItemsSystem
 
         private void SetWeaponStats()
         {
-            _attackRate = _meleeWeaponSO.AttackRate;
+            _attackRate = MeleeWeaponTemplate.AttackRate;
         }
 
         public override void Interact()
         {
-            OnPickupAudioClipTriggered?.Invoke(_meleeWeaponSO.ItemPickupSound);
-            OnItemEquipped?.Invoke(_meleeWeaponSO, baseAmount, gameObject);
+            OnPickupAudioClipTriggered?.Invoke(MeleeWeaponTemplate.ItemPickupSound);
+            OnItemEquipped?.Invoke(MeleeWeaponTemplate, baseAmount, gameObject);
         }
 
         public override void Equip()
         {
             base.Equip();
-            transform.localPosition = _meleeWeaponSO.HoldOffset;
-            transform.localRotation = _meleeWeaponSO.HoldRotation;
-            SwayIntensity = _meleeWeaponSO.SwayIntensity;
-            SwaySmooth = _meleeWeaponSO.SwaySmooth;
-            OnWeaponEquipSoundTriggered?.Invoke(_meleeWeaponSO.EquipSound);
+            transform.localPosition = MeleeWeaponTemplate.HoldOffset;
+            transform.localRotation = MeleeWeaponTemplate.HoldRotation;
+            SwayIntensity = MeleeWeaponTemplate.SwayIntensity;
+            SwaySmooth = MeleeWeaponTemplate.SwaySmooth;
+            OnWeaponEquipSoundTriggered?.Invoke(MeleeWeaponTemplate.EquipSound);
         }
 
         public override void Attack()

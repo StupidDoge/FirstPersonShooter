@@ -99,9 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2aabd658067a6848b05e94eee3a7b5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponSO: {fileID: 11400000, guid: 2b42e7b3415a6954c839a073113c4fda, type: 2}
   _interactableLayer: 7
   _weaponLayer: 8
-  _meleeWeaponSO: {fileID: 11400000, guid: 2b42e7b3415a6954c839a073113c4fda, type: 2}
 --- !u!65 &8779599729968933153
 BoxCollider:
   m_ObjectHideFlags: 0

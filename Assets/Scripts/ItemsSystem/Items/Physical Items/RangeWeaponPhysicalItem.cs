@@ -12,19 +12,17 @@ namespace ItemsSystem
         public static Action<int, int> OnCurrentAmmoAmountChanged;
         public static event Func<AmmoType, int> OnRangeWeaponEquipped;
 
-        [SerializeField] private RangeWeaponSO _rangeWeaponSO;
         [SerializeField] protected ParticleSystem muzzleFlash;
-
         private int _ammoClip;
         private float _fireRate;
         private float _reloadTime;
         private Camera _mainCamera;
 
-        public RangeWeaponSO WeaponTemplate => _rangeWeaponSO;
         public int AmmoClip => _ammoClip;
         public float FireRate => _fireRate;
         public Camera MainCamera => _mainCamera;
 
+        public RangeWeaponSO RangeWeaponTemplate { get; private set; }
         public bool CanShoot { get; protected set; } = true;
         public bool IsReloading { get; protected set; } = false;
         public int TotalAmmo { get; set; }
@@ -32,6 +30,10 @@ namespace ItemsSystem
 
         private void Awake()
         {
+            if (!(BaseTemplate is RangeWeaponSO))
+                Debug.LogError(name + " item has been assigned with wrong template!");
+
+            RangeWeaponTemplate = (RangeWeaponSO)BaseTemplate;
             SetWeaponStats();
         }
 
@@ -53,16 +55,16 @@ namespace ItemsSystem
 
         private void SetWeaponStats()
         {
-            _ammoClip = _rangeWeaponSO.AmmoClip;
-            _fireRate = _rangeWeaponSO.FireRate;
-            _reloadTime = _rangeWeaponSO.ReloadTime;
+            _ammoClip = RangeWeaponTemplate.AmmoClip;
+            _fireRate = RangeWeaponTemplate.FireRate;
+            _reloadTime = RangeWeaponTemplate.ReloadTime;
         }
 
         public override void Interact()
         {
-            OnPickupAudioClipTriggered?.Invoke(_rangeWeaponSO.ItemPickupSound);
-            OnItemEquipped?.Invoke(_rangeWeaponSO, baseAmount, gameObject);
-            OnItemEquipped?.Invoke(_rangeWeaponSO.AmmoBoxPrefab.AmmoTemplate, CurrentAmmo, gameObject);
+            OnPickupAudioClipTriggered?.Invoke(RangeWeaponTemplate.ItemPickupSound);
+            OnItemEquipped?.Invoke(RangeWeaponTemplate, baseAmount, gameObject);
+            OnItemEquipped?.Invoke(RangeWeaponTemplate.AmmoBoxPrefab.AmmoTemplate, CurrentAmmo, gameObject);
         }
 
         public void SetCurrentAmmo(int amount)
@@ -79,15 +81,15 @@ namespace ItemsSystem
         public override void Equip()
         {
             base.Equip();
-            transform.localPosition = _rangeWeaponSO.HoldOffset;
-            transform.localRotation = _rangeWeaponSO.HoldRotation;
-            SwayIntensity = _rangeWeaponSO.SwayIntensity;
-            SwaySmooth = _rangeWeaponSO.SwaySmooth;
-            TotalAmmo = (int)OnRangeWeaponEquipped?.Invoke(_rangeWeaponSO.WeaponAmmoType);
+            transform.localPosition = RangeWeaponTemplate.HoldOffset;
+            transform.localRotation = RangeWeaponTemplate.HoldRotation;
+            SwayIntensity = RangeWeaponTemplate.SwayIntensity;
+            SwaySmooth = RangeWeaponTemplate.SwaySmooth;
+            TotalAmmo = (int)OnRangeWeaponEquipped?.Invoke(RangeWeaponTemplate.WeaponAmmoType);
             if (TotalAmmo <= _ammoClip)
                 CurrentAmmo = TotalAmmo;
             OnWeaponEquipped?.Invoke(CurrentAmmo, TotalAmmo);
-            OnWeaponEquipSoundTriggered?.Invoke(_rangeWeaponSO.EquipSound);
+            OnWeaponEquipSoundTriggered?.Invoke(RangeWeaponTemplate.EquipSound);
         }
 
         public override void Unequip()
@@ -99,9 +101,9 @@ namespace ItemsSystem
         public virtual void Aim(bool aimInput)
         {
             if (aimInput)
-                transform.localPosition = WeaponTemplate.AimPosition;
+                transform.localPosition = RangeWeaponTemplate.AimPosition;
             else
-                transform.localPosition = WeaponTemplate.HoldOffset;
+                transform.localPosition = RangeWeaponTemplate.HoldOffset;
         }
 
         public virtual IEnumerator Reload()
@@ -140,7 +142,7 @@ namespace ItemsSystem
 
         private void UpdateTotalAmmoAmount(AmmoType ammoType, int amount)
         {
-            if (_rangeWeaponSO.WeaponAmmoType == ammoType)
+            if (RangeWeaponTemplate.WeaponAmmoType == ammoType)
             {
                 TotalAmmo += amount;
                 if (InPlayerHands)

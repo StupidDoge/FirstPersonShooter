@@ -7,9 +7,11 @@ namespace ItemsSystem
     {
         public static Action<AudioClip> OnWeaponEquipSoundTriggered;
 
+        [SerializeField] private WeaponSO _weaponSO;
         [SerializeField] private int _interactableLayer;
         [SerializeField] private int _weaponLayer;
 
+        public WeaponSO BaseTemplate => _weaponSO;
         public bool CanAttack { get; protected set; } = true;
         public float SwayIntensity { get; protected set; }
         public float SwaySmooth { get; protected set; }
@@ -20,11 +22,6 @@ namespace ItemsSystem
             base.Start();
         }
 
-        public override void Interact()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public virtual void Equip()
         {
             GetComponent<Rigidbody>().isKinematic = true;
@@ -33,10 +30,7 @@ namespace ItemsSystem
             SetItemLayer(_weaponLayer);
         }
 
-        public virtual void Attack()
-        {
-
-        }
+        public virtual void Attack() { }
 
         public virtual void Unequip()
         {

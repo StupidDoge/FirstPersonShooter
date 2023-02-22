@@ -133,9 +133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 816673e748b723d45b52f8523be39be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponSO: {fileID: 11400000, guid: 74afbc8b1c4250347a44ced27f6ae71c, type: 2}
   _interactableLayer: 7
   _weaponLayer: 8
-  _rangeWeaponSO: {fileID: 11400000, guid: 74afbc8b1c4250347a44ced27f6ae71c, type: 2}
   muzzleFlash: {fileID: 8340077496052321107}
   <CurrentAmmo>k__BackingField: 6
 --- !u!82 &3210202965516411378
