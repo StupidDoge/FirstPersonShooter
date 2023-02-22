@@ -495,7 +495,6 @@ MonoBehaviour:
     type: 3}
   _itemContextMenu: {fileID: 7030080196806663658}
   _activeItemCell: {fileID: 7351861396645155646}
-  _firstEmptyCell: 0
 --- !u!222 &90233453
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4441,16 +4440,6 @@ PrefabInstance:
     - target: {fileID: 4250417658083472540, guid: 726442d26b53ccc428c04d0d406539d1,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8903682730718268827, guid: 726442d26b53ccc428c04d0d406539d1,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8903682730718268827, guid: 726442d26b53ccc428c04d0d406539d1,
-        type: 3}
-      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
